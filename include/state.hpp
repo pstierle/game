@@ -17,6 +17,7 @@ struct State
     int mouseX;
     int mouseY;
     int waveCount;
+    int playerHealth;
     float deltaTime;
 };
 

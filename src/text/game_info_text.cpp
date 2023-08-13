@@ -5,12 +5,14 @@
 
 extern State state;
 
-GameInfoText::GameInfoText() : Text({10, 10, FONT_SIZE, FONT_SIZE}, "0")
+GameInfoText::GameInfoText() : Text({0, 0, 20, 20}, "0")
 {
     fpsTimer = SDL_GetTicks();
     frameCount = 0;
     fps = 0;
 }
+
+GameInfoText::~GameInfoText() {}
 
 void GameInfoText::update()
 {
@@ -22,7 +24,7 @@ void GameInfoText::update()
         fps = frameCount;
         frameCount = 0;
         fpsTimer = currentTime;
-        std::string parsed = std::to_string(fps) + " Score: " + std::to_string(state.waveCount);
+        std::string parsed = std::to_string(fps) + "      Score: " + std::to_string(state.waveCount) + "      Health: " + std::to_string(state.playerHealth);
         text = parsed;
         rect.w = text.length() * FONT_SIZE;
     }

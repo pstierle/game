@@ -27,6 +27,8 @@ private:
     GameInfoText gameInfoText;
     std::vector<Monster *> monsters;
     Button waveButton;
+
+    bool roundRunning();
 };
 
 #endif
