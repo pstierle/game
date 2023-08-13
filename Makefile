@@ -1,9 +1,9 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -Iinclude
-LDFLAGS = -Llib -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf
+LDFLAGS = -Llib -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image
 
 SRCS = src/main.cpp
-SRCS += $(wildcard src/state/*.cpp) $(wildcard src/game/*.cpp) $(wildcard src/entities/*.cpp)
+SRCS += $(wildcard src/state/*.cpp) $(wildcard src/game/*.cpp) $(wildcard src/text/*.cpp) $(wildcard src/sprite/*.cpp) $(wildcard src/utils/*.cpp)
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(OBJS:.o=.d)

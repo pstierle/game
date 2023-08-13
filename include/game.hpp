@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "SDL2/SDL_ttf.h"
 #include "fps_text.hpp"
+#include "monster.hpp"
 
 class Game
 {

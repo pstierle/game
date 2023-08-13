@@ -12,7 +12,7 @@ int SDL_main(int argc, char *argv[])
 
     Game game;
 
-    bool setup = game.setup(1280, 720);
+    bool setup = game.setup(1280, 960);
 
     if (!setup)
     {

@@ -1,8 +1,8 @@
 
 #include "fps_text.hpp"
-#include <iostream>
+#include "constants.hpp"
 
-FPSText::FPSText() : Text({0, 0, 100, 100}, "111")
+FPSText::FPSText() : Text({10, 10, FONT_SIZE, FONT_SIZE}, "0")
 {
     fpsTimer = SDL_GetTicks();
     frameCount = 0;
@@ -20,6 +20,7 @@ void FPSText::update()
         frameCount = 0;
         fpsTimer = currentTime;
 
-        std::cout << "FPS: " << fps << std::endl;
+        text = std::to_string(fps);
+        rect.w = text.length() * FONT_SIZE;
     }
 }
