@@ -12,9 +12,9 @@ Game::~Game() {}
 void Game::startWave()
 {
     state.waveCount++;
-    int monsterCount = state.waveCount * 1000;
+    int monsterCount = state.waveCount * 10;
 
-    for (int i = 0; i < monsterCount; ++i)
+    for (int i = 0; i < 1; ++i)
     {
         Monster *monster = new Monster(START_POINT, {0, 1}, i * 200);
         monsters.push_back(monster);

@@ -23,4 +23,4 @@ $(TARGET): $(OBJS)
 -include $(DEPS)
 
 clean:
-	del /Q $(OBJS) $(DEPS) $(TARGET)
+	del /Q $(SRCS)\*.o  $(TARGET)

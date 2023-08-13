@@ -4,12 +4,13 @@
 #include "constants.hpp"
 #include <cmath>
 #include <chrono>
+#include <iostream>
 
 extern State state;
 
 Monster::Monster(SDL_FPoint _position, SDL_Point _spritePosition, long _delay) : Sprite(_position, _spritePosition)
 {
-    speed = 5;
+    speed = 10;
     health = 100;
     visited.push_back(currentGridPosition());
     delay = _delay;
@@ -74,7 +75,7 @@ void Monster::update()
 
         bool alreadyVisted = false;
 
-        for (std::vector<SDL_Point>::size_type j = 0; j < visited.size(); j++)
+        for (size_t j = 0; j < visited.size(); j++)
         {
             if (visited[j].x == newX && visited[j].y == newY)
             {
@@ -98,6 +99,8 @@ void Monster::update()
     {
         gridPosition.y += dy * velocity;
     }
+
+    visited.push_back(currentGridPosition());
 }
 
 SDL_Point Monster::currentGridPosition()
