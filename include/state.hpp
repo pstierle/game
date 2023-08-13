@@ -16,6 +16,7 @@ struct State
     Map *map;
     int mouseX;
     int mouseY;
+    int waveCount;
     float deltaTime;
 };
 

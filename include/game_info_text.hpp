@@ -1,12 +1,13 @@
-#ifndef FPS_TEXT_HPP
-#define FPS_TEXT_HPP
+#ifndef GAME_INFO_TEXT_HPP
+#define GAME_INFO_TEXT_HPP
 
 #include "text.hpp"
 
-class FPSText : public Text
+class GameInfoText : public Text
 {
 public:
-    FPSText();
+    GameInfoText();
+    ~GameInfoText();
     void update();
 
 private:

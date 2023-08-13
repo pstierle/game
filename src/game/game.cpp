@@ -4,16 +4,15 @@
 #include "game.hpp"
 #include "state.hpp"
 #include "constants.hpp"
-#include "fps_text.hpp"
 
 extern State state;
-Monster monster = Monster(START_POINT, {0, 1});
 
-Game::Game()
+Game::Game() {}
+Game::~Game() {}
+
+void Game::startWave()
 {
-}
-Game::~Game()
-{
+    state.waveCount++;
 }
 
 bool Game::setup(int width, int height)
@@ -57,7 +56,9 @@ bool Game::setup(int width, int height)
     running = true;
     previousTime = SDL_GetTicks();
 
-    fpsText = FPSText();
+    gameInfoText = GameInfoText();
+
+    waveButton = Button({100, 100, 100, 100}, "Start Round");
 
     state.map = new Map();
 
@@ -95,9 +96,8 @@ void Game::update()
     Uint32 currentTime = SDL_GetTicks();
     state.deltaTime = (currentTime - previousTime) / 1000.0f;
     previousTime = currentTime;
-    monster.update();
     state.map->update();
-    fpsText.update();
+    gameInfoText.update();
 }
 
 void Game::render()
@@ -105,8 +105,8 @@ void Game::render()
     SDL_RenderClear(state.renderer);
 
     state.map->render();
-    fpsText.render();
-    monster.render();
+    gameInfoText.render();
+    waveButton.render();
 
     SDL_RenderPresent(state.renderer);
 }

@@ -3,8 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include "SDL2/SDL_ttf.h"
-#include "fps_text.hpp"
+#include "game_info_text.hpp"
 #include "monster.hpp"
+#include "button.hpp"
 
 class Game
 {
@@ -19,10 +20,13 @@ public:
     void listen_events();
     void render();
     void destroy();
+    void startWave();
 
 private:
     Uint32 previousTime;
-    FPSText fpsText;
+    GameInfoText gameInfoText;
+    std::vector<Monster *> monsters;
+    Button waveButton;
 };
 
 #endif

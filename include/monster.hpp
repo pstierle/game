@@ -13,6 +13,7 @@ public:
     void update();
     SDL_Point currentGridPosition();
     bool validGridPosition(int x, int y, int rows, int cols);
+    bool isEndPosition();
 };
 
 #endif

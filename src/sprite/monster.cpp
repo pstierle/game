@@ -15,11 +15,8 @@ Monster::Monster(SDL_FPoint _position, SDL_Point _spritePosition) : Sprite(_posi
 
 void Monster::update()
 {
-
-    if (gridPosition.x == END_POINT.x && gridPosition.y == END_POINT.y)
+    if (isEndPosition())
     {
-        std::cout << "ENDDD" << std::endl;
-
         return;
     }
 
@@ -104,4 +101,9 @@ SDL_Point Monster::currentGridPosition()
 bool Monster::validGridPosition(int x, int y, int rows, int cols)
 {
     return x >= 0 && x < rows && y >= 0 && y < cols;
+}
+
+bool Monster::isEndPosition()
+{
+    return currentGridPosition().x == END_POINT.x && currentGridPosition().y == END_POINT.y;
 }
