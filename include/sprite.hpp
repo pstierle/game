@@ -10,7 +10,6 @@ class Sprite
 public:
     SDL_FPoint gridPosition;
     SDL_Point spritePosition;
-    bool highlight;
 
     Sprite(SDL_FPoint _gridPosition, SDL_Point _spritePosition);
     ~Sprite();

@@ -3,8 +3,8 @@
 
 enum class FieldType
 {
-    PLACEABLE,
-    NON_PLACEABLE,
+    WALKABLE,
+    NON_WALKABLE,
 };
 
 #endif

@@ -5,6 +5,7 @@
 #include "SDL2/SDL_ttf.h"
 #include <vector>
 #include "map.hpp"
+#include "player.hpp"
 
 struct State
 {
@@ -13,11 +14,8 @@ struct State
     TTF_Font *font;
     SDL_Surface *surface;
     SDL_Texture *texture;
-    Map *map;
-    int mouseX;
-    int mouseY;
-    int waveCount;
-    int playerHealth;
+    Map map;
+    Player player;
     float deltaTime;
 };
 

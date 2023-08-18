@@ -24,7 +24,7 @@ void GameInfoText::update()
         fps = frameCount;
         frameCount = 0;
         fpsTimer = currentTime;
-        std::string parsed = std::to_string(fps) + "      Score: " + std::to_string(state.waveCount) + "      Health: " + std::to_string(state.playerHealth);
+        std::string parsed = std::to_string(fps) + "      Health: " + std::to_string(state.player.health);
         text = parsed;
         rect.w = text.length() * FONT_SIZE;
     }

@@ -1,3 +1,3 @@
 #include "state.hpp"
 
-State state = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 0, 0, 0, 0, 0.0f};
+State state = {nullptr, nullptr, nullptr, nullptr, nullptr, Map(), Player(), 0.0f};

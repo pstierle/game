@@ -10,7 +10,6 @@ public:
     FieldType type;
     Field();
     Field(SDL_FPoint _position, FieldType _type, SDL_Point _spritePosition);
-    void update();
 };
 
 #endif

@@ -10,8 +10,8 @@ public:
     std::vector<std::vector<Field>> fieldGrid;
 
     Map();
+    void initFields();
     void render();
-    void update();
 };
 
 #endif

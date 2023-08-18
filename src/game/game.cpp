@@ -1,6 +1,7 @@
 #include <cmath>
 #include "map.hpp"
 #include "game.hpp"
+#include "player.hpp"
 #include "state.hpp"
 #include "constants.hpp"
 
@@ -8,18 +9,6 @@ extern State state;
 
 Game::Game() {}
 Game::~Game() {}
-
-void Game::startWave()
-{
-    state.waveCount++;
-    int monsterCount = state.waveCount * 10;
-
-    for (int i = 0; i < 1; ++i)
-    {
-        Monster *monster = new Monster(START_POINT, {0, 1}, i * 200);
-        monsters.push_back(monster);
-    }
-}
 
 bool Game::setup(int width, int height)
 {
@@ -58,16 +47,13 @@ bool Game::setup(int width, int height)
     SDL_Texture *_texture = SDL_CreateTextureFromSurface(state.renderer, _surface);
 
     state.texture = _texture;
-    state.playerHealth = 100;
 
     running = true;
     previousTime = SDL_GetTicks();
 
     gameInfoText = GameInfoText();
 
-    waveButton = Button({700, 0, 120, 32}, "Start Round");
-
-    state.map = new Map();
+    state.map.initFields();
 
     return true;
 }
@@ -84,40 +70,20 @@ void Game::listen_events()
 
     if (e.type == SDL_MOUSEMOTION)
     {
-        if (roundRunning())
-        {
-            state.mouseX = -1;
-            state.mouseY = -1;
-        }
-        else
-        {
-            state.mouseX = e.motion.x;
-            state.mouseY = e.motion.y;
-        }
+        state.player.mouseX = e.motion.x;
+        state.player.mouseY = e.motion.y;
     }
 
     if (e.type == SDL_MOUSEBUTTONDOWN)
     {
         if (e.button.button == SDL_BUTTON_LEFT)
         {
-            int mouseX = e.button.x;
-            int mouseY = e.button.y;
-
-            if (!roundRunning())
-            {
-                if (waveButton.isClicked(mouseX, mouseY))
-                {
-                    startWave();
-                }
-            }
         }
     }
     if (e.type == SDL_WINDOWEVENT)
     {
         if (e.window.event == SDL_WINDOWEVENT_RESIZED)
         {
-            // int newWidth = e.window.data1;
-            // int newHeight = e.window.data2;
         }
     }
 }
@@ -127,47 +93,17 @@ void Game::update()
     Uint32 currentTime = SDL_GetTicks();
     state.deltaTime = (currentTime - previousTime) / 1000.0f;
     previousTime = currentTime;
-    state.map->update();
     gameInfoText.update();
-
-    for (auto it = monsters.begin(); it != monsters.end();)
-    {
-        if ((*it)->isEndPosition())
-        {
-            state.playerHealth--;
-            delete *it;
-            it = monsters.erase(it);
-        }
-        else if ((*it)->health <= 0)
-        {
-            // death anim
-            delete *it;
-            it = monsters.erase(it);
-        }
-        else
-        {
-            (*it)->update();
-            ++it;
-        }
-    }
+    state.player.update();
 }
 
 void Game::render()
 {
     SDL_RenderClear(state.renderer);
 
-    state.map->render();
+    state.map.render();
     gameInfoText.render();
-
-    for (Monster *monster : monsters)
-    {
-        monster->render();
-    }
-
-    if (!roundRunning())
-    {
-        waveButton.render();
-    }
+    state.player.render();
 
     SDL_RenderPresent(state.renderer);
 }
@@ -179,9 +115,4 @@ void Game::destroy()
     TTF_Quit();
     SDL_Quit();
     running = false;
-}
-
-bool Game::roundRunning()
-{
-    return monsters.size() > 0;
 }
