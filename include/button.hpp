@@ -14,7 +14,7 @@ public:
     Button();
 
     void render();
-    bool isClicked(int mouseX, int mouseY);
+    bool isClicked(float mouseX, float mouseY);
 };
 
 #endif

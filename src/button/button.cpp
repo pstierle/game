@@ -27,7 +27,7 @@ void Button::render()
     labelText.render();
 }
 
-bool Button::isClicked(int mouseX, int mouseY)
+bool Button::isClicked(float mouseX, float mouseY)
 {
     return Util::pointInRect(mouseX, mouseY, position);
 }

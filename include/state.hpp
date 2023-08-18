@@ -14,6 +14,8 @@ struct State
     TTF_Font *font;
     SDL_Surface *surface;
     SDL_Texture *texture;
+    SDL_Surface *playerSurface;
+    SDL_Texture *playerTexture;
     Map map;
     Player player;
     float deltaTime;

@@ -9,10 +9,14 @@ public:
     int health;
     int mouseX;
     int mouseY;
+    float dx;
+    float dy;
 
     Player();
     ~Player();
 
+    void updateDirection(int keyCode);
+    void resetDirection(int keyCode);
     void update();
 };
 

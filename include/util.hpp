@@ -4,5 +4,5 @@
 
 namespace Util
 {
-    bool pointInRect(int x, int y, SDL_FRect rect);
+    bool pointInRect(float x, float y, SDL_FRect rect);
 }

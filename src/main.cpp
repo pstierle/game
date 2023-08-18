@@ -21,8 +21,8 @@ int SDL_main(int argc, char *argv[])
 
     while (game.running)
     {
-        game.listen_events();
         game.update();
+        game.listen_events();
         game.render();
     }
 

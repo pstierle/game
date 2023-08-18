@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include "map.hpp"
 #include "game.hpp"
 #include "player.hpp"
@@ -48,6 +49,11 @@ bool Game::setup(int width, int height)
 
     state.texture = _texture;
 
+    SDL_Surface *_playerSurface = IMG_Load("player_sprite_sheet.png");
+    SDL_Texture *_playerTexture = SDL_CreateTextureFromSurface(state.renderer, _playerSurface);
+
+    state.playerTexture = _playerTexture;
+
     running = true;
     previousTime = SDL_GetTicks();
 
@@ -85,6 +91,14 @@ void Game::listen_events()
         if (e.window.event == SDL_WINDOWEVENT_RESIZED)
         {
         }
+    }
+    if (e.type == SDL_KEYDOWN)
+    {
+        state.player.updateDirection(e.key.keysym.sym);
+    }
+    if (e.type == SDL_KEYUP)
+    {
+        state.player.resetDirection(e.key.keysym.sym);
     }
 }
 
