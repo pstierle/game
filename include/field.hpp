@@ -7,6 +7,7 @@
 class Field : public Sprite
 {
 public:
+    SDL_FPoint initialPosition;
     FieldType type;
     Field();
     Field(SDL_FPoint _position, FieldType _type, SDL_Point _spritePosition);

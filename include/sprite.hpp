@@ -8,13 +8,17 @@
 class Sprite
 {
 public:
-    SDL_FPoint gridPosition;
+    SDL_FPoint position;
     SDL_Point spritePosition;
+    int width;
+    int height;
+    int spriteHeight;
+    int spriteWidth;
+    bool staticPosition;
 
-    Sprite(SDL_FPoint _gridPosition, SDL_Point _spritePosition);
-    ~Sprite();
+    Sprite(SDL_FPoint _position, SDL_Point _spritePosition, int _spriteWidth, int _spriteHeight, int _width, int _height);
 
-    void render();
+    void render() const;
 };
 
 #endif

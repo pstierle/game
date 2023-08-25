@@ -3,8 +3,8 @@
 
 enum class FieldType
 {
-    WALKABLE,
-    NON_WALKABLE,
+    GRASS,
+    DIRT,
 };
 
 #endif

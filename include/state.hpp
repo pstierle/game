@@ -5,6 +5,7 @@
 #include "SDL2/SDL_ttf.h"
 #include <vector>
 #include "map.hpp"
+#include "camera.hpp"
 #include "player.hpp"
 
 struct State
@@ -12,12 +13,11 @@ struct State
     SDL_Renderer *renderer;
     SDL_Window *window;
     TTF_Font *font;
-    SDL_Surface *surface;
-    SDL_Texture *texture;
-    SDL_Surface *playerSurface;
-    SDL_Texture *playerTexture;
+    SDL_Surface *spriteSurface;
+    SDL_Texture *spriteTexture;
     Map map;
     Player player;
+    Camera camera;
     float deltaTime;
 };
 

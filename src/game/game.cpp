@@ -5,6 +5,7 @@
 #include "player.hpp"
 #include "state.hpp"
 #include "constants.hpp"
+#include "camera.hpp"
 
 extern State state;
 
@@ -23,7 +24,7 @@ bool Game::setup(int width, int height)
         return false;
     }
 
-    state.window = SDL_CreateWindow("TD", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
+    state.window = SDL_CreateWindow("game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
 
     if (!state.window)
     {
@@ -44,23 +45,21 @@ bool Game::setup(int width, int height)
         return false;
     }
 
-    SDL_Surface *_surface = IMG_Load("sprite_sheet.png");
-    SDL_Texture *_texture = SDL_CreateTextureFromSurface(state.renderer, _surface);
+    SDL_Surface *_spriteSurface = IMG_Load("sprite_sheet.png");
+    SDL_Texture *_spriteTexture = SDL_CreateTextureFromSurface(state.renderer, _spriteSurface);
 
-    state.texture = _texture;
+    state.spriteTexture = _spriteTexture;
 
-    SDL_Surface *_playerSurface = IMG_Load("player_sprite_sheet.png");
-    SDL_Texture *_playerTexture = SDL_CreateTextureFromSurface(state.renderer, _playerSurface);
-
-    state.playerTexture = _playerTexture;
-
-    running = true;
     previousTime = SDL_GetTicks();
 
     gameInfoText = GameInfoText();
 
     state.map.initFields();
+    state.map.initItems();
 
+    state.camera.updatePosition({0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height)});
+
+    running = true;
     return true;
 }
 
@@ -94,11 +93,11 @@ void Game::listen_events()
     }
     if (e.type == SDL_KEYDOWN)
     {
-        state.player.updateDirection(e.key.keysym.sym);
+        state.player.keyDown(e.key.keysym.sym);
     }
     if (e.type == SDL_KEYUP)
     {
-        state.player.resetDirection(e.key.keysym.sym);
+        state.player.keyUp(e.key.keysym.sym);
     }
 }
 
@@ -107,8 +106,11 @@ void Game::update()
     Uint32 currentTime = SDL_GetTicks();
     state.deltaTime = (currentTime - previousTime) / 1000.0f;
     previousTime = currentTime;
-    gameInfoText.update();
+
     state.player.update();
+    state.camera.update();
+    state.map.update();
+    gameInfoText.update();
 }
 
 void Game::render()
@@ -116,8 +118,12 @@ void Game::render()
     SDL_RenderClear(state.renderer);
 
     state.map.render();
-    gameInfoText.render();
     state.player.render();
+    gameInfoText.render();
+    for (const auto item : state.player.inventory)
+    {
+        item.render();
+    }
 
     SDL_RenderPresent(state.renderer);
 }
