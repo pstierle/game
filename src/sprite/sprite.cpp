@@ -25,6 +25,4 @@ void Sprite::render() const
         positionDestination.y = positionDestination.y + state.camera.position.y;
     }
     SDL_RenderCopyF(state.renderer, state.spriteTexture, &spriteSource, &positionDestination);
-    // SDL_SetRenderDrawColor(state.renderer, 255, 0, 0, 255);
-    // SDL_RenderDrawRectF(state.renderer, &positionDestination);
 }

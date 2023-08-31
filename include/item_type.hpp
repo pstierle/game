@@ -3,6 +3,7 @@
 
 enum class ItemType
 {
+    NONE,
     SWORD,
 };
 

@@ -24,3 +24,31 @@ $(TARGET): $(OBJS)
 
 clean:
 	del /Q $(subst /,\,$(OBJS:.o=.o)) $(subst /,\,$(TARGET))
+
+
+
+# CXX = g++
+
+# CXXFLAGS = -Wall -Wextra -std=c++11
+
+# SRC_DIR = src
+# SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard src/entities/*.cpp) $(wildcard src/state/*.cpp)
+# OBJ_DIR = output
+# OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+
+# EXE_NAME = td
+
+# SDL_INCLUDE = -I include -I include/SDL2
+# SDL_LIB = -L lib -lSDL2 -lSDL2_ttf
+
+# all: $(EXE_NAME)
+
+# $(EXE_NAME): $(OBJ_FILES)
+# 	$(CXX) $(CXXFLAGS) $(OBJ_FILES) -o $(EXE_NAME) $(SDL_LIB)
+
+# $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+# 	@mkdir -p $(@D)
+# 	$(CXX) $(CXXFLAGS) -c $< -o $@ $(SDL_INCLUDE)
+
+# clean:
+# 	rm -rf $(OBJ_DIR) $(EXE_NAME)

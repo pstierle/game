@@ -9,8 +9,7 @@ Field::Field() : Sprite({}, {}, 0, 0, 0, 0)
 {
 }
 
-Field::Field(SDL_FPoint _position, FieldType _type, SDL_Point _spritePosition) : Sprite(_position, _spritePosition, 32, 32, GRID_SIDE_LENGTH, GRID_SIDE_LENGTH)
+Field::Field(SDL_FPoint _position, SDL_Point _spritePosition) : Sprite(_position, _spritePosition, 32, 32, GRID_SIDE_LENGTH, GRID_SIDE_LENGTH)
 {
     initialPosition = _position;
-    type = _type;
 }

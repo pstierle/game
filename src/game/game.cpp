@@ -99,6 +99,13 @@ void Game::listen_events()
     {
         state.player.keyUp(e.key.keysym.sym);
     }
+    if (e.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if (e.button.button == SDL_BUTTON_LEFT)
+        {
+            state.player.handleAttack();
+        }
+    }
 }
 
 void Game::update()
@@ -120,10 +127,7 @@ void Game::render()
     state.map.render();
     state.player.render();
     gameInfoText.render();
-    for (const auto item : state.player.inventory)
-    {
-        item.render();
-    }
+    state.player.renderInventory();
 
     SDL_RenderPresent(state.renderer);
 }

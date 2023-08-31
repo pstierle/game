@@ -4,6 +4,8 @@
 #include "text.hpp"
 #include "sword.hpp"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 extern State state;
 
@@ -21,14 +23,26 @@ void Map::initFields()
         {
             if (GRID[j][i] == 1)
             {
-                Field field({static_cast<float>(i) * GRID_SIDE_LENGTH, static_cast<float>(j) * GRID_SIDE_LENGTH}, FieldType::DIRT, {3, 0});
+                SDL_Point dirt = {};
+
+                if (GRID[j - 1][i] == 1 || GRID[j + 1][i] == 1)
+                {
+                    dirt = {3, 0};
+                }
+                else
+                {
+                    dirt = {5, 0};
+                }
+                Field field({static_cast<float>(i) * GRID_SIDE_LENGTH, static_cast<float>(j) * GRID_SIDE_LENGTH}, dirt);
                 fieldGrid[i][j] = field;
                 width = static_cast<float>(i) * GRID_SIDE_LENGTH;
                 height = static_cast<float>(j) * GRID_SIDE_LENGTH;
             }
             if (GRID[j][i] == 0)
             {
-                Field field({static_cast<float>(i) * GRID_SIDE_LENGTH, static_cast<float>(j) * GRID_SIDE_LENGTH}, FieldType::GRASS, {2, 0});
+                int random = (std::rand() % 2 == 0) ? 2 : 4;
+
+                Field field({static_cast<float>(i) * GRID_SIDE_LENGTH, static_cast<float>(j) * GRID_SIDE_LENGTH}, {random, 0});
                 fieldGrid[i][j] = field;
                 width = static_cast<float>(i) * GRID_SIDE_LENGTH;
                 height = static_cast<float>(j) * GRID_SIDE_LENGTH;
@@ -39,9 +53,11 @@ void Map::initFields()
 
 void Map::initItems()
 {
-    items.resize(1, Item({}, {}, 0, 0, 0, 0));
     Sword sword({30.0f, 30.0f});
-    items[0] = sword;
+    items.push_back(sword);
+
+    Sword sword1({120.0f, 60.0f});
+    items.push_back(sword1);
 }
 
 void Map::render()
