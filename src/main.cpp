@@ -5,7 +5,7 @@
 #define SDL_MAIN_HANDLED
 #endif
 
-int SDL_main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     (void)argc;
     (void)argv;
