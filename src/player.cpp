@@ -14,7 +14,9 @@ Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position
     position = _position;
     color = _color;
     nameText = Text({0, 0}, name, color);
+    healthText = Text({0, 0}, "100", color);
     nameText.center = true;
+    healthText.center = true;
     dy = 400;
     dx = 0;
     credits = 100;
@@ -23,16 +25,22 @@ Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position
 
 void Player::render()
 {
-    // player model
-    SDL_Rect spriteSource = {0, 0, 64, 64};
-    SDL_FRect positionDestination = {position.x, position.y, 32, 32};
-    SDL_RenderCopyF(state.renderer, texture, &spriteSource, &positionDestination);
-
-    // render text
-    nameText.render();
+    renderModel();
+    renderInfoText();
 }
 
 void Player::update()
+{
+    updatePosition();
+    updateInfoText();
+}
+
+SDL_FRect Player::positionRect()
+{
+    return {position.x, position.y, 32, 32};
+}
+
+void Player::updatePosition()
 {
     bool yAxisIntersection = false;
 
@@ -83,14 +91,33 @@ void Player::update()
     {
         dy += GRAVITY * state.deltaTime;
     }
-
-    // text position
+}
+void Player::updateInfoText()
+{
     nameText.position = position;
-    nameText.position.y -= 20;
+    nameText.position.y -= 46;
     nameText.position.x += 16;
+
+    healthText.position = position;
+    healthText.position.y -= 22;
+    healthText.position.x += 16;
+    healthText.text = std::to_string(health);
 }
 
-SDL_FRect Player::positionRect()
+void Player::renderModel()
 {
-    return {position.x, position.y, 32, 32};
+    SDL_Rect spriteSource = {0, 0, 64, 64};
+    SDL_FRect positionDestination = {position.x, position.y, 32, 32};
+    SDL_RenderCopyF(state.renderer, texture, &spriteSource, &positionDestination);
+}
+void Player::renderInfoText()
+{
+    SDL_FRect nameBackGroundRect = {nameText.position.x - 4 - static_cast<float>(nameText.width) / 2, nameText.position.y, static_cast<float>(nameText.width) + 8, 20.0f};
+    Util::drawRectangle(nameBackGroundRect, COLOR_GREY, color, 2);
+
+    SDL_FRect healthBackGroundRect = {healthText.position.x - 4 - static_cast<float>(healthText.width) / 2, healthText.position.y, static_cast<float>(healthText.width) + 8, 20.0f};
+    Util::drawRectangle(healthBackGroundRect, COLOR_GREY, color, 2);
+
+    nameText.render();
+    healthText.render();
 }

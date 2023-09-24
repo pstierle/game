@@ -8,7 +8,6 @@ class Game
 public:
     Uint32 previousTime;
     std::vector<Player> players;
-    std::vector<Text> playerTexts;
     Map map;
     WeaponMenu weaponMenu;
     Weapon *selectedWeapon;

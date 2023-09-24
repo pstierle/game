@@ -5,7 +5,11 @@ extern State state;
 Shotgun::Shotgun(int _cost) : Weapon(_cost)
 {
     aimingSprite = Sprite(TextureType::WEAPON_SHOTGUN, {0, 0}, 32, 32);
-    fireingSprite = Sprite(TextureType::SHOTGUN_BULLET, {0, 0}, 10, 10);
+    fireingSprites.resize(3, Sprite());
+    fireingSprites[0] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
+    fireingSprites[1] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
+    fireingSprites[2] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
+    aimingSprite.position = {state.game.currentPlayer().position.x, state.game.currentPlayer().position.y};
 }
 
 void Shotgun::render()
@@ -13,117 +17,120 @@ void Shotgun::render()
     SDL_FRect positionRect = aimingSprite.positionRect();
     SDL_Rect sourceRect = {0, 0, 16, 16};
 
-    if (launchAngle >= 90 || launchAngle <= -90)
+    if (launchAngle >= -90.0f && launchAngle <= 90.0f)
     {
-        SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_VERTICAL);
+        SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_NONE);
     }
     else
     {
-        SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_VERTICAL);
+    }
+
+    if (state.game.gameState == GameStateType::WEAPON_SELECTED)
+    {
+        renderAimDirection(150, 0);
     }
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
-        fireingSprite.render();
+        for (size_t i = 0; i < fireingSprites.size(); ++i)
+        {
+            fireingSprites[i].render();
+        }
     }
 }
 
 void Shotgun::update()
 {
-    if (state.game.gameState == GameStateType::WEAPON_SELECTED)
-    {
-        Player player = state.game.currentPlayer();
-
-        SDL_FPoint playerPosition = {player.position.x + 16, player.position.y + 16};
-        SDL_FPoint direction = {static_cast<float>(mousePosition.x) - playerPosition.x, static_cast<float>(mousePosition.y) - playerPosition.y};
-
-        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-        if (length > 0)
-        {
-            direction.x /= length;
-            direction.y /= length;
-            launchAngle = atan2(direction.y, direction.x) * (180.0f / 3.14159265359f);
-        }
-
-        if (launchAngle >= 90 || launchAngle <= -90)
-        {
-            aimingSprite.position = {player.position.x, player.position.y};
-        }
-        else
-        {
-            aimingSprite.position = {player.position.x + 16, player.position.y};
-        }
-        std::cout << launchAngle << std::endl;
-        //  + launchAngle * 0.2f
-    }
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
         int windowWidth, windowHeight;
         SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
 
-        if (fireingSprite.position.x <= 0 || fireingSprite.position.y <= 0 || fireingSprite.position.x + fireingSprite.width >= windowWidth || fireingSprite.position.y + fireingSprite.height >= windowHeight)
+        std::vector<size_t> bulletsToRemove;
+
+        for (size_t i = 0; i < fireingSprites.size(); ++i)
         {
-            state.game.setWeaponSelection();
-            state.game.nextTurn();
-            return;
-        }
+            bool remove = false;
 
-        SDL_FRect fireingSpritePosition = fireingSprite.positionRect();
-
-        Player *intersectingPlayer = nullptr;
-
-        for (size_t i = 0; i < state.game.players.size(); ++i)
-        {
-            if (state.game.players[i].name == state.game.currentPlayer().name)
+            if (fireingSprites[i].position.x <= 0 || fireingSprites[i].position.y <= 0 || fireingSprites[i].position.x + fireingSprites[i].width >= windowWidth || fireingSprites[i].position.y + fireingSprites[i].height >= windowHeight)
             {
+                remove = true;
                 continue;
             }
 
-            SDL_FRect playerRect = state.game.players[i].positionRect();
+            SDL_FRect fireingSpritePosition = fireingSprites[i].positionRect();
 
-            if (SDL_HasIntersectionF(&playerRect, &fireingSpritePosition))
+            Player *intersectingPlayer = nullptr;
+
+            for (size_t i = 0; i < state.game.players.size(); ++i)
             {
-                intersectingPlayer = &state.game.players[i];
+                if (state.game.players[i].name == state.game.currentPlayer().name)
+                {
+                    continue;
+                }
+
+                SDL_FRect playerRect = state.game.players[i].positionRect();
+
+                if (SDL_HasIntersectionF(&playerRect, &fireingSpritePosition))
+                {
+                    intersectingPlayer = &state.game.players[i];
+                }
+            }
+
+            if (intersectingPlayer != nullptr)
+            {
+                intersectingPlayer->health -= 10;
+            }
+
+            if (intersectsSolidTile(fireingSpritePosition) || Util::calculateDistance(state.game.currentPlayer().position, {fireingSpritePosition.x, fireingSpritePosition.y}) > 150)
+            {
+                remove = true;
+            }
+            else
+            {
+                float initialSpeed = 400.0f;
+                float deltaTime = state.deltaTime;
+                float gravity = 400.0f;
+                float launchAngleOffset = launchAngle + (i * 5);
+                float radians = launchAngleOffset * (3.14159265359f / 180.0f);
+
+                float initialVelocityX = initialSpeed * cos(radians);
+                float initialVelocityY = initialSpeed * sin(radians);
+
+                fireingSprites[i].position.x += initialVelocityX * deltaTime;
+                fireingSprites[i].position.y += initialVelocityY * deltaTime - 0.5f * gravity * deltaTime * deltaTime;
+                initialVelocityY += gravity * deltaTime;
+            }
+
+            if (remove)
+            {
+                bulletsToRemove.push_back(i);
             }
         }
 
-        if (intersectingPlayer != nullptr)
+        for (int i = bulletsToRemove.size() - 1; i >= 0; --i)
         {
-            intersectingPlayer->health -= 10;
-            state.game.setWeaponSelection();
-            state.game.nextTurn();
-            return;
+            fireingSprites.erase(fireingSprites.begin() + bulletsToRemove[i]);
         }
 
-        if (intersectsSolidTile(fireingSpritePosition))
+        if (fireingSprites.size() == 0)
         {
             state.game.setWeaponSelection();
             state.game.nextTurn();
             return;
         }
-
-        float initialSpeed = 500.0f;
-        float deltaTime = state.deltaTime;
-        float gravity = 400.0f;
-
-        float radians = launchAngle * (3.14159265359f / 180.0f);
-
-        float initialVelocityX = initialSpeed * cos(radians);
-        float initialVelocityY = initialSpeed * sin(radians);
-
-        fireingSprite.position.x += initialVelocityX * deltaTime;
-        fireingSprite.position.y += initialVelocityY * deltaTime - 0.5f * gravity * deltaTime * deltaTime;
-        initialVelocityY += gravity * deltaTime;
     }
-
-    //         state.game.setWeaponSelection();
-    //         state.game.nextTurn();
 }
 
 void Shotgun::leftMouseUp()
 {
     Player player = state.game.currentPlayer();
-    fireingSprite.position = {player.position.x, player.position.y};
+
+    for (size_t i = 0; i < fireingSprites.size(); ++i)
+    {
+        fireingSprites[i].position = {player.position.x, player.position.y};
+    }
+
     fireWeapon();
 }

@@ -62,9 +62,13 @@ void TextureLoader::init()
     textures[TextureType::WEAPON_SHOTGUN] = SDL_CreateTextureFromSurface(state.renderer, shotgunSurface);
     SDL_FreeSurface(shotgunSurface);
 
-    SDL_Surface *shotgunBulletSurface = IMG_Load("textures/shotgun_bullet.png");
-    textures[TextureType::SHOTGUN_BULLET] = SDL_CreateTextureFromSurface(state.renderer, shotgunBulletSurface);
-    SDL_FreeSurface(shotgunBulletSurface);
+    SDL_Surface *sniperSurface = IMG_Load("textures/sniper.png");
+    textures[TextureType::WEAPON_SNIPER] = SDL_CreateTextureFromSurface(state.renderer, sniperSurface);
+    SDL_FreeSurface(sniperSurface);
+
+    SDL_Surface *bulletSurface = IMG_Load("textures/bullet.png");
+    textures[TextureType::BULLET] = SDL_CreateTextureFromSurface(state.renderer, bulletSurface);
+    SDL_FreeSurface(bulletSurface);
 }
 
 SDL_Texture *TextureLoader::get(TextureType textureType)

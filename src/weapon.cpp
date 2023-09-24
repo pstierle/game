@@ -26,6 +26,30 @@ void Weapon::leftMouseUp()
 {
 }
 
+void Weapon::renderAimDirection(float firingLength, float offset)
+{
+    (void)offset;
+
+    Player player = state.game.currentPlayer();
+    SDL_FPoint playerPosition = {player.position.x + 16, player.position.y + 16};
+
+    SDL_FPoint direction = {static_cast<float>(mousePosition.x) - playerPosition.x, static_cast<float>(mousePosition.y) - playerPosition.y};
+
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    if (length > 0)
+    {
+        direction.x /= length;
+        direction.y /= length;
+        launchAngle = atan2(direction.y, direction.x) * (180.0f / 3.14159265359f);
+    }
+
+    SDL_FPoint endPoint = {playerPosition.x + direction.x * firingLength, playerPosition.y + direction.y * firingLength};
+
+    SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
+    SDL_RenderDrawLineF(state.renderer, playerPosition.x, playerPosition.y, endPoint.x, endPoint.y);
+}
+
 void Weapon::fireWeapon()
 {
     Player player = state.game.currentPlayer();

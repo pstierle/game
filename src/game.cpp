@@ -19,16 +19,9 @@ bool Game::setup()
 
     players.resize(3, Player());
 
-    players[0] = Player(TextureType::PLAYER_BABY_YODA, "player1", {160.0f, 0.0f}, COLOR_RED);
-    players[1] = Player(TextureType::PLAYER_MARIO, "player2", {650.0f, 0.0f}, COLOR_GREEN);
-    players[2] = Player(TextureType::PLAYER_SPONGEBOB, "player3", {850.0f, 0.0f}, COLOR_BLUE);
-
-    playerTexts.resize(players.size(), Text());
-
-    for (size_t i = 0; i < players.size(); ++i)
-    {
-        playerTexts[i] = Text({20.0f, i * 25.0f + 100.0f}, players[i].name, players[i].color);
-    }
+    players[0] = Player(TextureType::PLAYER_BABY_YODA, "Yoda", {160.0f, 0.0f}, COLOR_RED);
+    players[1] = Player(TextureType::PLAYER_MARIO, "Mario", {650.0f, 0.0f}, COLOR_GREEN);
+    players[2] = Player(TextureType::PLAYER_SPONGEBOB, "Spongebob", {1150.0f, 0.0f}, COLOR_BLUE);
 
     running = true;
     return true;
@@ -104,14 +97,18 @@ void Game::update()
         players[i].update();
     }
 
-    for (size_t i = 0; i < playerTexts.size(); ++i)
-    {
-        playerTexts[i].text = players[i].name + "Health" + std::to_string(players[i].health);
-    }
-
     if (selectedWeapon != nullptr)
     {
         selectedWeapon->update();
+    }
+
+    if (gameState == GameStateType::WEAPON_SELECTION || gameState == GameStateType::WEAPON_FIRING)
+    {
+        SDL_ShowCursor(SDL_ENABLE);
+    }
+    if (gameState == GameStateType::WEAPON_SELECTED)
+    {
+        SDL_ShowCursor(SDL_DISABLE);
     }
 }
 
@@ -126,11 +123,6 @@ void Game::render()
     for (size_t i = 0; i < players.size(); ++i)
     {
         players[i].render();
-    }
-
-    for (size_t i = 0; i < playerTexts.size(); ++i)
-    {
-        playerTexts[i].render();
     }
 
     if (selectedWeapon != nullptr)

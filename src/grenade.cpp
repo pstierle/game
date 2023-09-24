@@ -15,24 +15,7 @@ void Grenade::render()
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        Player player = state.game.currentPlayer();
-        SDL_FPoint playerPosition = {player.position.x + 16, player.position.y + 16};
-
-        SDL_FPoint direction = {static_cast<float>(mousePosition.x) - playerPosition.x, static_cast<float>(mousePosition.y) - playerPosition.y};
-
-        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-        if (length > 0)
-        {
-            direction.x /= length;
-            direction.y /= length;
-            launchAngle = atan2(direction.y, direction.x) * (180.0f / 3.14159265359f);
-        }
-
-        SDL_FPoint endPoint = {playerPosition.x + direction.x * 120.0f, playerPosition.y + direction.y * 120.0f};
-
-        SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
-        SDL_RenderDrawLineF(state.renderer, playerPosition.x, playerPosition.y, endPoint.x, endPoint.y);
+        renderAimDirection(100, 0);
     }
 }
 

@@ -1,15 +1,15 @@
-#ifndef SHOTGUN_HPP
-#define SHOTGUN_HPP
+#ifndef SNIPER_HPP
+#define SNIPER_HPP
 
 #include "global.hpp"
 
-class Shotgun : public Weapon
+class Sniper : public Weapon
 {
 public:
     Sprite aimingSprite;
-    std::vector<Sprite> fireingSprites;
+    Sprite fireingSprite;
 
-    Shotgun(int _cost);
+    Sniper(int _cost);
 
     void render() override;
     void update() override;

@@ -18,7 +18,8 @@ enum class TextureType
     WEAPON_BOMB,
     WEAPON_GRENADE,
     WEAPON_SHOTGUN,
-    SHOTGUN_BULLET,
+    WEAPON_SNIPER,
+    BULLET,
 };
 
 #endif

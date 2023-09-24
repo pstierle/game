@@ -46,10 +46,57 @@ namespace Util
         return Particle(randomPosition, randomInRange(2, 5), randomInRange(2, 5), randomInRange(200, 500), randomGrey, randomGrey, randomGrey, 255);
     }
 
-    void drawRectangle(SDL_FPoint position, int width, int height)
+    void drawRectangle(SDL_FRect positionRect, SDL_Color backgroundColor, SDL_Color borderColor, float borderWidth)
     {
-        SDL_SetRenderDrawColor(state.renderer, 255, 0, 0, 255);
-        SDL_FRect rect = {position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
-        SDL_RenderDrawRectF(state.renderer, &rect);
+        // Set the background color
+        SDL_SetRenderDrawColor(state.renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+        SDL_RenderFillRectF(state.renderer, &positionRect);
+
+        // Set the border color
+        SDL_SetRenderDrawColor(state.renderer, borderColor.r, borderColor.g, borderColor.b, borderColor.a);
+
+        // Draw the border
+        SDL_FRect borderRect = {
+            positionRect.x - borderWidth / 2,
+            positionRect.y - borderWidth / 2,
+            positionRect.w + borderWidth,
+            positionRect.h + borderWidth};
+
+        SDL_RenderDrawRectF(state.renderer, &borderRect);
+    }
+
+    float calculateDistance(SDL_FPoint point1, SDL_FPoint point2)
+    {
+        float deltaX = point2.x - point1.x;
+        float deltaY = point2.y - point1.y;
+
+        return std::sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    void drawTriangle(SDL_FPoint position, int width, SDL_Color color, float angle)
+    {
+        SDL_FPoint points[3];
+        points[0] = {position.x, position.y};
+        points[1] = {position.x + static_cast<float>(width), position.y};
+        points[2] = {position.x + static_cast<float>(width) / 2, position.y + static_cast<float>(width) * 0.866f};
+
+        SDL_SetRenderDrawColor(state.renderer, color.r, color.g, color.b, color.a);
+
+        float centerX = (points[0].x + points[1].x + points[2].x) / 3.0f;
+        float centerY = (points[0].y + points[1].y + points[2].y) / 3.0f;
+
+        for (int i = 0; i < 3; ++i)
+        {
+            points[i].x -= centerX;
+            points[i].y -= centerY;
+
+            float x = points[i].x;
+            points[i].x = x * std::cos(angle) - points[i].y * std::sin(angle) + centerX;
+            points[i].y = x * std::sin(angle) + points[i].y * std::cos(angle) + centerY;
+        }
+
+        SDL_RenderDrawLineF(state.renderer, points[0].x, points[0].y, points[1].x, points[1].y);
+        SDL_RenderDrawLineF(state.renderer, points[1].x, points[1].y, points[2].x, points[2].y);
+        SDL_RenderDrawLineF(state.renderer, points[2].x, points[2].y, points[0].x, points[0].y);
     }
 }

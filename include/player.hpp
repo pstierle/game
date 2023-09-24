@@ -10,6 +10,7 @@ public:
     SDL_Texture *texture;
     TextureType textureType;
     Text nameText;
+    Text healthText;
     std::string name;
     SDL_Color color;
     int dx;
@@ -20,8 +21,14 @@ public:
     Player();
     Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color);
 
-    void render();
     void update();
+    void updatePosition();
+    void updateInfoText();
+
+    void render();
+    void renderModel();
+    void renderInfoText();
+
     SDL_FRect positionRect();
 };
 

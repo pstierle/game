@@ -8,8 +8,6 @@ class Grenade : public Weapon
 public:
     Sprite fireingSprite;
 
-    float launchAngle;
-
     Grenade(int _cost);
 
     void render() override;

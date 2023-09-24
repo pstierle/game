@@ -4,10 +4,12 @@ extern State state;
 
 WeaponMenu::WeaponMenu()
 {
-    menuWeapons.resize(3, MenuWeapon());
+    menuWeapons.resize(4, MenuWeapon());
+
     menuWeapons[0] = MenuWeapon(WeaponType::BOMB, TextureType::WEAPON_BOMB, {0, 0}, "Bomb", 20);
     menuWeapons[1] = MenuWeapon(WeaponType::GRENADE, TextureType::WEAPON_GRENADE, {0, 0}, "Grenade", 20);
     menuWeapons[2] = MenuWeapon(WeaponType::SHOTGUN, TextureType::WEAPON_SHOTGUN, {0, 0}, "Shotgun", 20);
+    menuWeapons[3] = MenuWeapon(WeaponType::SNIPER, TextureType::WEAPON_SNIPER, {0, 0}, "Sniper", 20);
 
     for (size_t i = 0; i < menuWeapons.size(); i++)
     {
@@ -21,38 +23,32 @@ WeaponMenu::WeaponMenu()
 
 void WeaponMenu::render()
 {
-    // render background
-    SDL_SetRenderDrawColor(state.renderer, COLOR_GREY.r, COLOR_GREY.g, COLOR_GREY.b, 255);
-    SDL_FRect backGroundRect = {10, 10, menuWeapons.size() * 40.0f + playerInfoText.width, 80.0f};
-    SDL_RenderFillRectF(state.renderer, &backGroundRect);
+    // background
+    SDL_FRect backGroundRect = {10, 10, menuWeapons.size() * 47.0f, 80.0f};
+    Util::drawRectangle(backGroundRect, COLOR_GREY, COLOR_DARK_GREY, 8);
 
     // render weapons
     for (size_t i = 0; i < menuWeapons.size(); i++)
     {
         Player player = state.game.currentPlayer();
-        SDL_FRect outlineRect = {menuWeapons[i].position.x, menuWeapons[i].position.y, 32, 32};
-
-        SDL_SetRenderDrawColor(state.renderer, 122, 122, 122, 255);
-        SDL_RenderFillRectF(state.renderer, &outlineRect);
+        SDL_FRect menuWeaponRect = {menuWeapons[i].position.x, menuWeapons[i].position.y, 32, 32};
 
         if (hoveredIndex == static_cast<int>(i) && menuWeapons[i].cost <= player.credits)
         {
-            SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
+            Util::drawRectangle(menuWeaponRect, COLOR_LIGHT_GREY, COLOR_RED, 2);
         }
         else
         {
-            SDL_SetRenderDrawColor(state.renderer, COLOR_DARK_GREY.r, COLOR_DARK_GREY.g, COLOR_DARK_GREY.b, 255);
+            Util::drawRectangle(menuWeaponRect, COLOR_LIGHT_GREY, COLOR_DARK_GREY, 2);
         }
-
-        SDL_RenderDrawRectF(state.renderer, &outlineRect);
 
         menuWeapons[i].render();
 
         if (menuWeapons[i].cost > player.credits)
         {
             SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
-            SDL_RenderDrawLineF(state.renderer, outlineRect.x, outlineRect.y, outlineRect.x + outlineRect.w, outlineRect.y + outlineRect.h);
-            SDL_RenderDrawLineF(state.renderer, outlineRect.x, outlineRect.y + outlineRect.h, outlineRect.x + outlineRect.w, outlineRect.y);
+            SDL_RenderDrawLineF(state.renderer, menuWeaponRect.x, menuWeaponRect.y, menuWeaponRect.x + menuWeaponRect.w, menuWeaponRect.y + menuWeaponRect.h);
+            SDL_RenderDrawLineF(state.renderer, menuWeaponRect.x, menuWeaponRect.y + menuWeaponRect.h, menuWeaponRect.x + menuWeaponRect.w, menuWeaponRect.y);
         }
     }
 
@@ -107,6 +103,12 @@ void WeaponMenu::mouseClick()
             if (targetWeapon.type == WeaponType::SHOTGUN)
             {
                 state.game.selectedWeapon = new Shotgun(targetWeapon.cost);
+                state.game.gameState = GameStateType::WEAPON_SELECTED;
+                hoveredIndex = -1;
+            }
+            if (targetWeapon.type == WeaponType::SNIPER)
+            {
+                state.game.selectedWeapon = new Sniper(targetWeapon.cost);
                 state.game.gameState = GameStateType::WEAPON_SELECTED;
                 hoveredIndex = -1;
             }

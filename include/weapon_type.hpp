@@ -7,6 +7,7 @@ enum class WeaponType
     BOMB,
     GRENADE,
     SHOTGUN,
+    SNIPER,
 };
 
 #endif

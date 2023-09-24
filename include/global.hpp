@@ -27,6 +27,7 @@
 #include "weapon.hpp"
 #include "bomb.hpp"
 #include "shotgun.hpp"
+#include "sniper.hpp"
 #include "grenade.hpp"
 #include "menu_weapon.hpp"
 #include "weapon_menu.hpp"
