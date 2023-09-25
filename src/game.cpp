@@ -20,7 +20,7 @@ bool Game::setup()
     players.resize(3, Player());
 
     players[0] = Player(TextureType::PLAYER_HULK, "Hulk", {650.0f, 0.0f}, COLOR_GREEN, 44, 44, WeaponType::HULK);
-    players[1] = Player(TextureType::PLAYER_SUPERMAN, "Superman", {1150.0f, 0.0f}, COLOR_BLUE, 32, 44, WeaponType::SUPERMAN);
+    players[1] = Player(TextureType::PLAYER_SUPERMAN, "Superman", {350.0f, 0.0f}, COLOR_BLUE, 32, 44, WeaponType::SUPERMAN);
     players[2] = Player(TextureType::PLAYER_IRONMAN, "Ironman", {250.0f, 0.0f}, COLOR_RED, 31, 44, WeaponType::IRONMAN);
 
     gameOverText = Text({0, 0}, "");
