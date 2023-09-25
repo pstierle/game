@@ -4,10 +4,13 @@
 enum class WeaponType
 {
     NONE,
-    BOMB,
+    AIRSTRIKE,
     GRENADE,
     SHOTGUN,
     SNIPER,
+    SUPERMAN,
+    IRONMAN,
+    HULK
 };
 
 #endif

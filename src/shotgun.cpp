@@ -9,7 +9,6 @@ Shotgun::Shotgun(int _cost) : Weapon(_cost)
     fireingSprites[0] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
     fireingSprites[1] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
     fireingSprites[2] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
-    aimingSprite.position = {state.game.currentPlayer().position.x, state.game.currentPlayer().position.y};
 }
 
 void Shotgun::render()
@@ -19,10 +18,12 @@ void Shotgun::render()
 
     if (launchAngle >= -90.0f && launchAngle <= 90.0f)
     {
+        positionRect.x += 10;
         SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_NONE);
     }
     else
     {
+        positionRect.x -= 10;
         SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_VERTICAL);
     }
 
@@ -42,6 +43,11 @@ void Shotgun::render()
 
 void Shotgun::update()
 {
+    float xOffset = state.game.currentPlayer().width - 5 - aimingSprite.width;
+    float yOffset = state.game.currentPlayer().height - 5 - aimingSprite.height;
+
+    aimingSprite.position = {state.game.currentPlayer().position.x + (xOffset / 2), state.game.currentPlayer().position.y + (yOffset / 2)};
+
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
         int windowWidth, windowHeight;
@@ -80,7 +86,7 @@ void Shotgun::update()
 
             if (intersectingPlayer != nullptr)
             {
-                intersectingPlayer->health -= 10;
+                intersectingPlayer->damagePlayer(10);
             }
 
             if (intersectsSolidTile(fireingSpritePosition) || Util::calculateDistance(state.game.currentPlayer().position, {fireingSpritePosition.x, fireingSpritePosition.y}) > 150)
@@ -125,12 +131,20 @@ void Shotgun::update()
 
 void Shotgun::leftMouseUp()
 {
-    Player player = state.game.currentPlayer();
-
-    for (size_t i = 0; i < fireingSprites.size(); ++i)
+    for (size_t i = 0; i < state.game.players.size(); ++i)
     {
-        fireingSprites[i].position = {player.position.x, player.position.y};
+        if (i == static_cast<size_t>(state.game.currentTurn))
+        {
+            for (size_t i = 0; i < fireingSprites.size(); ++i)
+            {
+                fireingSprites[i].position = {state.game.players[i].position.x, state.game.players[i].position.y};
+            }
+            state.game.players[i].bounceBack(launchAngle);
+
+            break;
+        }
     }
 
+    // Fire the weapon
     fireWeapon();
 }

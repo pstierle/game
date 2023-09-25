@@ -25,7 +25,7 @@
 #include "sprite.hpp"
 #include "text.hpp"
 #include "weapon.hpp"
-#include "bomb.hpp"
+#include "airstrike.hpp"
 #include "shotgun.hpp"
 #include "sniper.hpp"
 #include "grenade.hpp"

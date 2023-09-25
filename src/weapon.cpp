@@ -52,8 +52,14 @@ void Weapon::renderAimDirection(float firingLength, float offset)
 
 void Weapon::fireWeapon()
 {
-    Player player = state.game.currentPlayer();
-    player.credits = player.credits - cost;
+    for (size_t i = 0; i < state.game.players.size(); ++i)
+    {
+        if (i == static_cast<size_t>(state.game.currentTurn))
+        {
+            state.game.players[i].credits = state.game.players[i].credits - cost;
+            break;
+        }
+    }
     state.game.gameState = GameStateType::WEAPON_FIRING;
 }
 
@@ -93,7 +99,7 @@ void Weapon::damagePlayersInRange(SDL_FRect _rect, int damage)
 
         if (SDL_HasIntersectionF(&playerRect, &_rect))
         {
-            state.game.players[i].health -= damage;
+            state.game.players[i].damagePlayer(damage);
         }
     }
 }

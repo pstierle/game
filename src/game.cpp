@@ -19,10 +19,15 @@ bool Game::setup()
 
     players.resize(3, Player());
 
-    players[0] = Player(TextureType::PLAYER_BABY_YODA, "Yoda", {160.0f, 0.0f}, COLOR_RED);
-    players[1] = Player(TextureType::PLAYER_MARIO, "Mario", {650.0f, 0.0f}, COLOR_GREEN);
-    players[2] = Player(TextureType::PLAYER_SPONGEBOB, "Spongebob", {1150.0f, 0.0f}, COLOR_BLUE);
+    players[0] = Player(TextureType::PLAYER_HULK, "Hulk", {650.0f, 0.0f}, COLOR_GREEN, 44, 44, WeaponType::HULK);
+    players[1] = Player(TextureType::PLAYER_SUPERMAN, "Superman", {1150.0f, 0.0f}, COLOR_BLUE, 32, 44, WeaponType::SUPERMAN);
+    players[2] = Player(TextureType::PLAYER_IRONMAN, "Ironman", {250.0f, 0.0f}, COLOR_RED, 31, 44, WeaponType::IRONMAN);
 
+    gameOverText = Text({0, 0}, "");
+    gameOverText.center = true;
+
+    gameOver = false;
+    lastPlayer = nullptr;
     running = true;
     return true;
 }
@@ -84,6 +89,24 @@ void Game::listen_events()
 
 void Game::update()
 {
+    if (gameOver)
+    {
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
+
+        gameOverText.position = {static_cast<float>(windowWidth) / 2, static_cast<float>(windowHeight) / 2};
+
+        if (lastPlayer == nullptr)
+        {
+            gameOverText.text = "Game over no one won.";
+        }
+        else
+        {
+            gameOverText.text = "Game over " + lastPlayer->name + " won.";
+        }
+        return;
+    }
+
     Uint32 currentTime = SDL_GetTicks();
     state.deltaTime = (currentTime - previousTime) / 1000.0f;
     previousTime = currentTime;
@@ -110,6 +133,8 @@ void Game::update()
     {
         SDL_ShowCursor(SDL_DISABLE);
     }
+
+    checkGameOver();
 }
 
 void Game::render()
@@ -128,6 +153,20 @@ void Game::render()
     if (selectedWeapon != nullptr)
     {
         selectedWeapon->render();
+    }
+
+    if (gameOver)
+    {
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
+
+        SDL_SetRenderDrawBlendMode(state.renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(state.renderer, 0, 0, 0, 128);
+        SDL_Rect shadeRect = {0, 0, windowWidth, windowHeight};
+        SDL_RenderFillRect(state.renderer, &shadeRect);
+        SDL_SetRenderDrawBlendMode(state.renderer, SDL_BLENDMODE_NONE);
+
+        gameOverText.render();
     }
 
     SDL_RenderPresent(state.renderer);
@@ -164,4 +203,35 @@ void Game::nextTurn()
 Player Game::currentPlayer()
 {
     return players[currentTurn];
+}
+
+void Game::checkGameOver()
+{
+    std::vector<int> playersToRemove;
+
+    for (size_t i = 0; i < players.size(); ++i)
+    {
+        if (players[i].health <= 0)
+        {
+            playersToRemove.push_back(i);
+        }
+    }
+
+    for (int i = playersToRemove.size() - 1; i >= 0; --i)
+    {
+        players.erase(players.begin() + playersToRemove[i]);
+    }
+
+    if (players.size() == 0)
+    {
+        gameOver = true;
+        return;
+    }
+
+    if (players.size() == 1)
+    {
+        lastPlayer = &players[0];
+        gameOver = true;
+        return;
+    }
 }

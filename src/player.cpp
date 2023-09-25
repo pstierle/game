@@ -6,7 +6,7 @@ Player::Player()
 {
 }
 
-Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color)
+Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color, int _width, int _height, WeaponType _specialWeaponType)
 {
     textureType = _textureType;
     texture = state.textureLoader.get(_textureType);
@@ -17,10 +17,14 @@ Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position
     healthText = Text({0, 0}, "100", color);
     nameText.center = true;
     healthText.center = true;
-    dy = 400;
-    dx = 0;
     credits = 100;
     health = 100;
+    bounceStart = 0;
+    xVelocity = 0;
+    yVelocity = 0;
+    width = _width;
+    height = _height;
+    specialWeaponType = _specialWeaponType;
 }
 
 void Player::render()
@@ -37,12 +41,24 @@ void Player::update()
 
 SDL_FRect Player::positionRect()
 {
-    return {position.x, position.y, 32, 32};
+    return {position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
 }
 
 void Player::updatePosition()
 {
+    if (SDL_GetTicks() - bounceStart < 300 && bounceStart != 0)
+    {
+        float speed = 300 - (SDL_GetTicks() - bounceStart);
+        float radians = launchAngle * (3.14159265359f / 180.0f);
+        xVelocity = speed * cos(radians) * -1;
+    }
+    else
+    {
+        xVelocity = 0;
+    }
+
     bool yAxisIntersection = false;
+    bool xAxisIntersection = false;
 
     for (int i = 0; i < GRID_ROWS; ++i)
     {
@@ -51,45 +67,48 @@ void Player::updatePosition()
             if (state.game.map.tileGrid[i][j].textureType == TextureType::ROCK)
             {
                 SDL_FRect rockRect = state.game.map.tileGrid[i][j].positionRect();
-                SDL_FRect playerRect = {position.x, position.y, 32, 32};
+                SDL_FRect playerRect = positionRect();
 
                 if (SDL_HasIntersectionF(&playerRect, &rockRect))
                 {
-                    if (playerRect.y + playerRect.h < rockRect.y + rockRect.h && dy > 0)
+                    if (playerRect.y + playerRect.h < rockRect.y + rockRect.h)
                     {
-                        dy = 0;
                         yAxisIntersection = true;
                     }
-                    else if (playerRect.y > rockRect.y && dy < 0)
+                    else if (playerRect.y > rockRect.y)
                     {
-                        dy = 0;
                         yAxisIntersection = true;
                     }
-                    else if (playerRect.x + playerRect.w < rockRect.x + rockRect.w && dx > 0)
+                    else if (playerRect.x + playerRect.w < rockRect.x + rockRect.w)
                     {
-                        dx = 0;
+                        xAxisIntersection = true;
                     }
-                    else if (playerRect.x > rockRect.x && dx < 0)
+                    else if (playerRect.x > rockRect.x)
                     {
-                        dx = 0;
+                        xAxisIntersection = true;
                     }
                 }
             }
         }
     }
 
-    if (dx > 0)
+    if (!yAxisIntersection)
     {
-        position.x += dx * state.deltaTime;
+        if (yVelocity > 0 || yVelocity < 0)
+        {
+            position.y += GRAVITY * yVelocity * state.deltaTime;
+        }
+        else
+        {
+            position.y += GRAVITY * state.deltaTime;
+        }
     }
-    if (dy > 0)
+    if (!xAxisIntersection)
     {
-        position.y += dy * state.deltaTime;
-    }
-
-    if (yAxisIntersection == false)
-    {
-        dy += GRAVITY * state.deltaTime;
+        if (xVelocity > 0 || xVelocity < 0)
+        {
+            position.x += xVelocity * state.deltaTime;
+        }
     }
 }
 void Player::updateInfoText()
@@ -106,10 +125,11 @@ void Player::updateInfoText()
 
 void Player::renderModel()
 {
-    SDL_Rect spriteSource = {0, 0, 64, 64};
-    SDL_FRect positionDestination = {position.x, position.y, 32, 32};
+    SDL_Rect spriteSource = {0, 0, width, height};
+    SDL_FRect positionDestination = {position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
     SDL_RenderCopyF(state.renderer, texture, &spriteSource, &positionDestination);
 }
+
 void Player::renderInfoText()
 {
     SDL_FRect nameBackGroundRect = {nameText.position.x - 4 - static_cast<float>(nameText.width) / 2, nameText.position.y, static_cast<float>(nameText.width) + 8, 20.0f};
@@ -120,4 +140,15 @@ void Player::renderInfoText()
 
     nameText.render();
     healthText.render();
+}
+
+void Player::damagePlayer(int damage)
+{
+    health -= damage;
+}
+
+void Player::bounceBack(float _launchAngle)
+{
+    launchAngle = _launchAngle;
+    bounceStart = SDL_GetTicks();
 }

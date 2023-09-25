@@ -4,17 +4,18 @@ extern State state;
 
 WeaponMenu::WeaponMenu()
 {
-    menuWeapons.resize(4, MenuWeapon());
+    menuWeapons.resize(5, MenuWeapon());
 
-    menuWeapons[0] = MenuWeapon(WeaponType::BOMB, TextureType::WEAPON_BOMB, {0, 0}, "Bomb", 20);
-    menuWeapons[1] = MenuWeapon(WeaponType::GRENADE, TextureType::WEAPON_GRENADE, {0, 0}, "Grenade", 20);
-    menuWeapons[2] = MenuWeapon(WeaponType::SHOTGUN, TextureType::WEAPON_SHOTGUN, {0, 0}, "Shotgun", 20);
-    menuWeapons[3] = MenuWeapon(WeaponType::SNIPER, TextureType::WEAPON_SNIPER, {0, 0}, "Sniper", 20);
+    // reserve first slot for special weapon
+    menuWeapons[0] = MenuWeapon();
+    menuWeapons[1] = MenuWeapon(WeaponType::AIRSTRIKE, TextureType::WEAPON_AIRSTRIKE, {0, 0}, "Airstrike", 20);
+    menuWeapons[2] = MenuWeapon(WeaponType::GRENADE, TextureType::WEAPON_GRENADE, {0, 0}, "Grenade", 20);
+    menuWeapons[3] = MenuWeapon(WeaponType::SHOTGUN, TextureType::WEAPON_SHOTGUN, {0, 0}, "Shotgun", 20);
+    menuWeapons[4] = MenuWeapon(WeaponType::SNIPER, TextureType::WEAPON_SNIPER, {0, 0}, "Sniper", 20);
 
-    for (size_t i = 0; i < menuWeapons.size(); i++)
-    {
-        menuWeapons[i].position = {i * 45.0f + 20.0f, 20.0f};
-    }
+    specialWeapons[WeaponType::SUPERMAN] = MenuWeapon(WeaponType::SUPERMAN, TextureType::WEAPON_SUPERMAN, {0, 0}, "Laser", 20);
+    specialWeapons[WeaponType::IRONMAN] = MenuWeapon(WeaponType::IRONMAN, TextureType::WEAPON_IRONMAN, {0, 0}, "Rockets", 20);
+    specialWeapons[WeaponType::HULK] = MenuWeapon(WeaponType::HULK, TextureType::WEAPON_HULK, {0, 0}, "Smash", 20);
 
     playerInfoText = Text({20.0f, 60.0f}, "");
 
@@ -30,35 +31,47 @@ void WeaponMenu::render()
     // render weapons
     for (size_t i = 0; i < menuWeapons.size(); i++)
     {
-        Player player = state.game.currentPlayer();
-        SDL_FRect menuWeaponRect = {menuWeapons[i].position.x, menuWeapons[i].position.y, 32, 32};
-
-        if (hoveredIndex == static_cast<int>(i) && menuWeapons[i].cost <= player.credits)
-        {
-            Util::drawRectangle(menuWeaponRect, COLOR_LIGHT_GREY, COLOR_RED, 2);
-        }
-        else
-        {
-            Util::drawRectangle(menuWeaponRect, COLOR_LIGHT_GREY, COLOR_DARK_GREY, 2);
-        }
-
-        menuWeapons[i].render();
-
-        if (menuWeapons[i].cost > player.credits)
-        {
-            SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
-            SDL_RenderDrawLineF(state.renderer, menuWeaponRect.x, menuWeaponRect.y, menuWeaponRect.x + menuWeaponRect.w, menuWeaponRect.y + menuWeaponRect.h);
-            SDL_RenderDrawLineF(state.renderer, menuWeaponRect.x, menuWeaponRect.y + menuWeaponRect.h, menuWeaponRect.x + menuWeaponRect.w, menuWeaponRect.y);
-        }
+        renderMenuWeapon(menuWeapons[i], hoveredIndex == static_cast<int>(i));
     }
 
     // render player info
     playerInfoText.render();
 }
 
+void WeaponMenu::renderMenuWeapon(MenuWeapon _weapon, bool hovered)
+{
+    Player player = state.game.currentPlayer();
+
+    SDL_FRect menuWeaponRect = {_weapon.position.x, _weapon.position.y, static_cast<float>(_weapon.width), static_cast<float>(_weapon.height)};
+
+    if (hovered && _weapon.cost <= player.credits)
+    {
+        Util::drawRectangle(menuWeaponRect, COLOR_LIGHT_GREY, COLOR_RED, 2);
+    }
+    else
+    {
+        Util::drawRectangle(menuWeaponRect, COLOR_LIGHT_GREY, COLOR_DARK_GREY, 2);
+    }
+
+    _weapon.render();
+
+    if (_weapon.cost > player.credits)
+    {
+        SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
+        SDL_RenderDrawLineF(state.renderer, menuWeaponRect.x, menuWeaponRect.y, menuWeaponRect.x + menuWeaponRect.w, menuWeaponRect.y + menuWeaponRect.h);
+        SDL_RenderDrawLineF(state.renderer, menuWeaponRect.x, menuWeaponRect.y + menuWeaponRect.h, menuWeaponRect.x + menuWeaponRect.w, menuWeaponRect.y);
+    }
+}
+
 void WeaponMenu::update()
 {
     Player player = state.game.currentPlayer();
+    menuWeapons[0] = specialWeapon(player.specialWeaponType);
+
+    for (size_t i = 0; i < menuWeapons.size(); i++)
+    {
+        menuWeapons[i].position = {i * 45.0f + 20.0f, 20.0f};
+    }
 
     // update player info
     playerInfoText.text = player.name + ", Credits: " + std::to_string(player.credits);
@@ -88,9 +101,9 @@ void WeaponMenu::mouseClick()
 
         if (targetWeapon.cost < player.credits)
         {
-            if (targetWeapon.type == WeaponType::BOMB)
+            if (targetWeapon.type == WeaponType::AIRSTRIKE)
             {
-                state.game.selectedWeapon = new Bomb(targetWeapon.cost);
+                state.game.selectedWeapon = new Airstrike(targetWeapon.cost);
                 state.game.gameState = GameStateType::WEAPON_SELECTED;
                 hoveredIndex = -1;
             }
@@ -114,4 +127,15 @@ void WeaponMenu::mouseClick()
             }
         }
     }
+}
+
+MenuWeapon WeaponMenu::specialWeapon(WeaponType _type)
+{
+    auto it = specialWeapons.find(_type);
+    if (it != specialWeapons.end())
+    {
+        return it->second;
+    }
+
+    return MenuWeapon();
 }

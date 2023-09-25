@@ -2,13 +2,13 @@
 
 extern State state;
 
-Bomb::Bomb(int _cost) : Weapon(_cost)
+Airstrike::Airstrike(int _cost) : Weapon(_cost)
 {
-    aimingSprite = Sprite(TextureType::BOMB_TARGET, {0, 0}, 64, 64);
-    fireingSprite = Sprite(TextureType::WEAPON_BOMB, {0, 0}, 32, 32);
+    aimingSprite = Sprite(TextureType::AIRSTRIKE_TARGET, {0, 0}, 64, 64);
+    fireingSprite = Sprite(TextureType::WEAPON_AIRSTRIKE, {0, 0}, 32, 32);
 }
 
-void Bomb::render()
+void Airstrike::render()
 {
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
@@ -20,7 +20,7 @@ void Bomb::render()
     }
 }
 
-void Bomb::update()
+void Airstrike::update()
 {
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
@@ -34,9 +34,9 @@ void Bomb::update()
             return;
         }
 
-        SDL_FRect bombRect = {fireingSprite.position.x, fireingSprite.position.y, static_cast<float>(fireingSprite.width), static_cast<float>(fireingSprite.height)};
+        SDL_FRect AirstrikeRect = {fireingSprite.position.x, fireingSprite.position.y, static_cast<float>(fireingSprite.width), static_cast<float>(fireingSprite.height)};
 
-        if (intersectsSolidTile(bombRect))
+        if (intersectsSolidTile(AirstrikeRect))
         {
             SDL_FPoint impactPosition = {fireingSprite.position.x + fireingSprite.height / 2, fireingSprite.position.y + fireingSprite.width / 2};
 
@@ -60,13 +60,13 @@ void Bomb::update()
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        aimingSprite.position = {static_cast<float>(mousePosition.x) - 32, static_cast<float>(mousePosition.y) - 32};
+        aimingSprite.position = {static_cast<float>(mousePosition.x) - aimingSprite.width / 2, static_cast<float>(mousePosition.y) - aimingSprite.height / 2};
     }
 }
 
-void Bomb::leftMouseUp()
+void Airstrike::leftMouseUp()
 {
-    fireingSprite.position.x = mousePosition.x - 32;
+    fireingSprite.position.x = mousePosition.x - aimingSprite.width / 2;
     fireingSprite.position.y = 0;
     fireWeapon();
 }

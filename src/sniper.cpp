@@ -69,7 +69,7 @@ void Sniper::update()
 
         if (intersectingPlayer != nullptr)
         {
-            intersectingPlayer->health -= 10;
+            intersectingPlayer->damagePlayer(10);
             state.game.setWeaponSelection();
             state.game.nextTurn();
             return;

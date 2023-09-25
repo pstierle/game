@@ -8,13 +8,16 @@ class Game
 public:
     Uint32 previousTime;
     std::vector<Player> players;
+    Player *lastPlayer;
     Map map;
     WeaponMenu weaponMenu;
     Weapon *selectedWeapon;
     GameStateType gameState;
+    Text gameOverText;
 
     int currentTurn;
     bool running;
+    bool gameOver;
 
     Game();
     ~Game();
@@ -26,6 +29,7 @@ public:
     void destroy();
     void setWeaponSelection();
     void nextTurn();
+    void checkGameOver();
     Player currentPlayer();
 };
 

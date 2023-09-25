@@ -9,17 +9,16 @@ public:
     SDL_FPoint position;
     SDL_Texture *texture;
     TextureType textureType;
-    Text nameText;
-    Text healthText;
+    Text nameText, healthText;
     std::string name;
     SDL_Color color;
-    int dx;
-    int dy;
-    int credits;
-    int health;
+    Uint32 bounceStart;
+    WeaponType specialWeaponType;
+
+    int xVelocity, yVelocity, credits, health, launchAngle, width, height;
 
     Player();
-    Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color);
+    Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color, int _width, int _height, WeaponType _specialWeaponType);
 
     void update();
     void updatePosition();
@@ -28,6 +27,9 @@ public:
     void render();
     void renderModel();
     void renderInfoText();
+
+    void damagePlayer(int damage);
+    void bounceBack(float launchAngle);
 
     SDL_FRect positionRect();
 };

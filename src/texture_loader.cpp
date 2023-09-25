@@ -18,45 +18,29 @@ void TextureLoader::init()
     textures[TextureType::WATER] = SDL_CreateTextureFromSurface(state.renderer, waterSurface);
     SDL_FreeSurface(waterSurface);
 
-    SDL_Surface *pineappleSurface = IMG_Load("textures/pineapple.png");
-    textures[TextureType::PLAYER_PINEAPPLE] = SDL_CreateTextureFromSurface(state.renderer, pineappleSurface);
-    SDL_FreeSurface(pineappleSurface);
+    SDL_Surface *supermanSurface = IMG_Load("textures/superman.png");
+    textures[TextureType::PLAYER_SUPERMAN] = SDL_CreateTextureFromSurface(state.renderer, supermanSurface);
+    SDL_FreeSurface(supermanSurface);
 
-    SDL_Surface *zombieSurface = IMG_Load("textures/zombie.png");
-    textures[TextureType::PLAYER_ZOMBIE] = SDL_CreateTextureFromSurface(state.renderer, zombieSurface);
-    SDL_FreeSurface(zombieSurface);
+    SDL_Surface *hulkSurface = IMG_Load("textures/hulk.png");
+    textures[TextureType::PLAYER_HULK] = SDL_CreateTextureFromSurface(state.renderer, hulkSurface);
+    SDL_FreeSurface(hulkSurface);
 
-    SDL_Surface *frogSurface = IMG_Load("textures/frog.png");
-    textures[TextureType::PLAYER_FROG] = SDL_CreateTextureFromSurface(state.renderer, frogSurface);
-    SDL_FreeSurface(frogSurface);
+    SDL_Surface *ironmanSurface = IMG_Load("textures/ironman.png");
+    textures[TextureType::PLAYER_IRONMAN] = SDL_CreateTextureFromSurface(state.renderer, ironmanSurface);
+    SDL_FreeSurface(ironmanSurface);
 
-    SDL_Surface *babyYodaSurface = IMG_Load("textures/baby_yoda.png");
-    textures[TextureType::PLAYER_BABY_YODA] = SDL_CreateTextureFromSurface(state.renderer, babyYodaSurface);
-    SDL_FreeSurface(babyYodaSurface);
-
-    SDL_Surface *marioSurface = IMG_Load("textures/mario.png");
-    textures[TextureType::PLAYER_MARIO] = SDL_CreateTextureFromSurface(state.renderer, marioSurface);
-    SDL_FreeSurface(marioSurface);
-
-    SDL_Surface *pickachuSurface = IMG_Load("textures/pickachu.png");
-    textures[TextureType::PLAYER_PICKACHU] = SDL_CreateTextureFromSurface(state.renderer, pickachuSurface);
-    SDL_FreeSurface(pickachuSurface);
-
-    SDL_Surface *spongebobSurface = IMG_Load("textures/spongebob.png");
-    textures[TextureType::PLAYER_SPONGEBOB] = SDL_CreateTextureFromSurface(state.renderer, spongebobSurface);
-    SDL_FreeSurface(spongebobSurface);
-
-    SDL_Surface *bombSurface = IMG_Load("textures/bomb.png");
-    textures[TextureType::WEAPON_BOMB] = SDL_CreateTextureFromSurface(state.renderer, bombSurface);
-    SDL_FreeSurface(bombSurface);
+    SDL_Surface *airstrikeSurface = IMG_Load("textures/airstrike.png");
+    textures[TextureType::WEAPON_AIRSTRIKE] = SDL_CreateTextureFromSurface(state.renderer, airstrikeSurface);
+    SDL_FreeSurface(airstrikeSurface);
 
     SDL_Surface *grenadeSurface = IMG_Load("textures/grenade.png");
     textures[TextureType::WEAPON_GRENADE] = SDL_CreateTextureFromSurface(state.renderer, grenadeSurface);
     SDL_FreeSurface(grenadeSurface);
 
-    SDL_Surface *bombTargetSurface = IMG_Load("textures/bomb_target.png");
-    textures[TextureType::BOMB_TARGET] = SDL_CreateTextureFromSurface(state.renderer, bombTargetSurface);
-    SDL_FreeSurface(bombTargetSurface);
+    SDL_Surface *airstrikeTargetSurface = IMG_Load("textures/airstrike_target.png");
+    textures[TextureType::AIRSTRIKE_TARGET] = SDL_CreateTextureFromSurface(state.renderer, airstrikeTargetSurface);
+    SDL_FreeSurface(airstrikeTargetSurface);
 
     SDL_Surface *shotgunSurface = IMG_Load("textures/shotgun.png");
     textures[TextureType::WEAPON_SHOTGUN] = SDL_CreateTextureFromSurface(state.renderer, shotgunSurface);
@@ -65,6 +49,18 @@ void TextureLoader::init()
     SDL_Surface *sniperSurface = IMG_Load("textures/sniper.png");
     textures[TextureType::WEAPON_SNIPER] = SDL_CreateTextureFromSurface(state.renderer, sniperSurface);
     SDL_FreeSurface(sniperSurface);
+
+    SDL_Surface *weaponSupermanSurface = IMG_Load("textures/weapon_superman.png");
+    textures[TextureType::WEAPON_SUPERMAN] = SDL_CreateTextureFromSurface(state.renderer, weaponSupermanSurface);
+    SDL_FreeSurface(weaponSupermanSurface);
+
+    SDL_Surface *weaponIronmanSurface = IMG_Load("textures/weapon_ironman.png");
+    textures[TextureType::WEAPON_IRONMAN] = SDL_CreateTextureFromSurface(state.renderer, weaponIronmanSurface);
+    SDL_FreeSurface(weaponIronmanSurface);
+
+    SDL_Surface *weaponHulkSurface = IMG_Load("textures/weapon_hulk.png");
+    textures[TextureType::WEAPON_HULK] = SDL_CreateTextureFromSurface(state.renderer, weaponHulkSurface);
+    SDL_FreeSurface(weaponHulkSurface);
 
     SDL_Surface *bulletSurface = IMG_Load("textures/bullet.png");
     textures[TextureType::BULLET] = SDL_CreateTextureFromSurface(state.renderer, bulletSurface);

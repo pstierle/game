@@ -1,15 +1,15 @@
-#ifndef BOMB_HPP
-#define BOMB_HPP
+#ifndef AIRSTRIKE_HPP
+#define AIRSTRIKE_HPP
 
 #include "global.hpp"
 
-class Bomb : public Weapon
+class Airstrike : public Weapon
 {
 public:
     Sprite aimingSprite;
     Sprite fireingSprite;
 
-    Bomb(int _cost);
+    Airstrike(int _cost);
 
     void render() override;
     void update() override;
