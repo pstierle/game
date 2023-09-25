@@ -1,13 +1,13 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -Iinclude
-LDFLAGS = -Llib -lSDL2 -lSDL2_ttf -lSDL2_image
+LDFLAGS = -Llib -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image
 
 SRCS += $(wildcard src/*.cpp)
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(OBJS:.o=.d)
 
-TARGET = game
+TARGET = game.exe
 
 .PHONY: all clean
 
@@ -22,4 +22,4 @@ $(TARGET): $(OBJS)
 -include $(DEPS)
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	del /Q $(subst /,\,$(OBJS:.o=.o)) $(subst /,\,$(TARGET))

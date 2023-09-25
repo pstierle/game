@@ -25,7 +25,7 @@ WeaponMenu::WeaponMenu()
 void WeaponMenu::render()
 {
     // background
-    SDL_FRect backGroundRect = {10, 10, menuWeapons.size() * 47.0f, 80.0f};
+    SDL_FRect backGroundRect = {10, 10, menuWeapons.size() * 47.0f, 75.0f};
     Util::drawRectangle(backGroundRect, COLOR_GREY, COLOR_DARK_GREY, 8);
 
     // render weapons
