@@ -5,6 +5,9 @@ extern State state;
 Grenade::Grenade(int _cost) : Weapon(_cost)
 {
     fireingSprite = Sprite(TextureType::WEAPON_GRENADE, {0, 0}, 22, 22);
+    throwStartTime = 0;
+    velocityX = 0;
+    velocityY = 0;
 }
 
 void Grenade::render()
@@ -33,15 +36,6 @@ void Grenade::update()
             return;
         }
 
-        float initialSpeed = 400.0f;
-        float deltaTime = state.deltaTime;
-        float gravity = 400.0f;
-
-        float radians = launchAngle * (3.14159265359f / 180.0f);
-
-        float initialVelocityX = initialSpeed * cos(radians);
-        float initialVelocityY = initialSpeed * sin(radians);
-
         SDL_FRect grenadeRect = {fireingSprite.position.x, fireingSprite.position.y, static_cast<float>(fireingSprite.width), static_cast<float>(fireingSprite.height)};
 
         if (intersectsSolidTile(grenadeRect))
@@ -63,9 +57,25 @@ void Grenade::update()
         }
         else
         {
-            fireingSprite.position.x += initialVelocityX * deltaTime;
-            fireingSprite.position.y += initialVelocityY * deltaTime - 0.5f * gravity * deltaTime * deltaTime;
-            initialVelocityY += gravity * deltaTime;
+            float speed = 400.0f;
+
+            float radians = launchAngle * (3.14159265359f / 180.0f);
+            float elapsed = static_cast<float>(SDL_GetTicks() - throwStartTime) / 2000.0f;
+
+            float initialVelocityX = cos(radians);
+            float initialVelocityY = sin(radians);
+
+            if (false)
+            {
+
+                fireingSprite.position.x += initialVelocityX * speed * state.deltaTime;
+                fireingSprite.position.y += initialVelocityY * speed * state.deltaTime;
+            }
+            else
+            {
+                fireingSprite.position.x += speed * initialVelocityX * state.deltaTime;
+                fireingSprite.position.y += speed * (initialVelocityY * elapsed) * elapsed * state.deltaTime * -1;
+            }
         }
     }
 }
@@ -74,5 +84,11 @@ void Grenade::leftMouseUp()
 {
     Player player = state.game.currentPlayer();
     fireingSprite.position = {player.position.x, player.position.y};
+
+    float radians = launchAngle * (3.14159265359f / 180.0f);
+    velocityX = cos(radians);
+    velocityY = sin(radians);
+
+    throwStartTime = SDL_GetTicks();
     fireWeapon();
 }

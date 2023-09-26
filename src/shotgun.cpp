@@ -5,10 +5,13 @@ extern State state;
 Shotgun::Shotgun(int _cost) : Weapon(_cost)
 {
     aimingSprite = Sprite(TextureType::WEAPON_SHOTGUN, {0, 0}, 32, 32);
-    fireingSprites.resize(3, Sprite());
-    fireingSprites[0] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
-    fireingSprites[1] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
-    fireingSprites[2] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
+
+    fireingSprites.resize(10, Sprite());
+
+    for (size_t i = 0; i < fireingSprites.size(); ++i)
+    {
+        fireingSprites[i] = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
+    }
 }
 
 void Shotgun::render()
@@ -96,17 +99,13 @@ void Shotgun::update()
             else
             {
                 float initialSpeed = 400.0f;
-                float deltaTime = state.deltaTime;
-                float gravity = 400.0f;
-                float launchAngleOffset = launchAngle + (i * 5);
-                float radians = launchAngleOffset * (3.14159265359f / 180.0f);
+                float radians = launchAngle * (3.14159265359f / 180.0f);
 
                 float initialVelocityX = initialSpeed * cos(radians);
                 float initialVelocityY = initialSpeed * sin(radians);
 
-                fireingSprites[i].position.x += initialVelocityX * deltaTime;
-                fireingSprites[i].position.y += initialVelocityY * deltaTime - 0.5f * gravity * deltaTime * deltaTime;
-                initialVelocityY += gravity * deltaTime;
+                fireingSprites[i].position.x += initialVelocityX * state.deltaTime;
+                fireingSprites[i].position.y += initialVelocityY * state.deltaTime;
             }
 
             if (remove)
@@ -135,10 +134,21 @@ void Shotgun::leftMouseUp()
     {
         if (i == static_cast<size_t>(state.game.currentTurn))
         {
-            for (size_t i = 0; i < fireingSprites.size(); ++i)
+            // Calculate the initial positions of the bullets
+            float xOffset = state.game.players[i].width / 2;
+            float yOffset = state.game.players[i].height / 2;
+
+            // Offset each bullet's position differently
+            for (size_t j = 0; j < fireingSprites.size(); ++j)
             {
-                fireingSprites[i].position = {state.game.players[i].position.x, state.game.players[i].position.y};
+                float angleOffset = (j - fireingSprites.size() / 2) * 20.0f; // Adjust angle offset as needed
+                float radians = (launchAngle + angleOffset) * (3.14159265359f / 180.0f);
+
+                fireingSprites[j].position = {
+                    state.game.players[i].position.x + xOffset * cos(radians) - yOffset * sin(radians),
+                    state.game.players[i].position.y + xOffset * sin(radians) + yOffset * cos(radians)};
             }
+
             state.game.players[i].bounceBack(launchAngle);
 
             break;

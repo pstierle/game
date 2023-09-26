@@ -85,15 +85,13 @@ void Sniper::update()
         {
             float initialSpeed = 700.0f;
             float deltaTime = state.deltaTime;
-            float gravity = 400.0f;
             float radians = launchAngle * (3.14159265359f / 180.0f);
 
             float initialVelocityX = initialSpeed * cos(radians);
             float initialVelocityY = initialSpeed * sin(radians);
 
             fireingSprite.position.x += initialVelocityX * deltaTime;
-            fireingSprite.position.y += initialVelocityY * deltaTime - 0.5f * gravity * deltaTime * deltaTime;
-            initialVelocityY += gravity * deltaTime;
+            fireingSprite.position.y += initialVelocityY * deltaTime;
         }
     }
 }
