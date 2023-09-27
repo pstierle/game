@@ -87,4 +87,63 @@ namespace Util
         SDL_RenderDrawLineF(state.renderer, points[1].x, points[1].y, points[2].x, points[2].y);
         SDL_RenderDrawLineF(state.renderer, points[2].x, points[2].y, points[0].x, points[0].y);
     }
+
+    bool doLinesIntersect(SDL_FPoint lineStart1, SDL_FPoint lineEnd1, SDL_FPoint lineStart2, SDL_FPoint lineEnd2)
+    {
+        float x1 = lineStart1.x;
+        float y1 = lineStart1.y;
+        float x2 = lineEnd1.x;
+        float y2 = lineEnd1.y;
+
+        float x3 = lineStart2.x;
+        float y3 = lineStart2.y;
+        float x4 = lineEnd2.x;
+        float y4 = lineEnd2.y;
+
+        float den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
+        if (den == 0)
+        {
+            return false;
+        }
+
+        float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
+        float u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
+
+        if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool lineIntersectsRect(SDL_FPoint lineStart, SDL_FPoint lineEnd, SDL_FRect rect)
+    {
+        if (pointInRect(lineStart, rect) || pointInRect(lineEnd, rect))
+        {
+            return true;
+        }
+
+        SDL_FPoint rectPoints[4];
+        rectPoints[0] = {rect.x, rect.y};
+        rectPoints[1] = {rect.x + rect.w, rect.y};
+        rectPoints[2] = {rect.x + rect.w, rect.y + rect.h};
+        rectPoints[3] = {rect.x, rect.y + rect.h};
+
+        for (int i = 0; i < 4; ++i)
+        {
+            int j = (i + 1) % 4;
+
+            SDL_FPoint edgeStart = rectPoints[i];
+            SDL_FPoint edgeEnd = rectPoints[j];
+
+            if (doLinesIntersect(lineStart, lineEnd, edgeStart, edgeEnd))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

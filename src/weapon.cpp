@@ -42,6 +42,15 @@ void Weapon::updateLaunchAngle(SDL_FPoint start)
 void Weapon::renderAimDirection(SDL_FPoint start, float firingLength)
 {
     SDL_FPoint direction = {static_cast<float>(mousePosition.x) - start.x, static_cast<float>(mousePosition.y) - start.y};
+
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    if (length > 0)
+    {
+        direction.x /= length;
+        direction.y /= length;
+    }
+
     SDL_FPoint endPoint = {start.x + direction.x * firingLength, start.y + direction.y * firingLength};
 
     SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
@@ -61,7 +70,7 @@ void Weapon::fireWeapon()
     state.game.gameState = GameStateType::WEAPON_FIRING;
 }
 
-bool Weapon::intersectsSolidTile(SDL_FRect _rect)
+bool Weapon::intersectsSolidTile(SDL_FRect rect)
 {
     bool hasIntersection = false;
 
@@ -73,7 +82,7 @@ bool Weapon::intersectsSolidTile(SDL_FRect _rect)
             {
                 SDL_FRect rockRect = state.game.map.tileGrid[i][j].positionRect();
 
-                if (SDL_HasIntersectionF(&_rect, &rockRect))
+                if (SDL_HasIntersectionF(&rect, &rockRect))
                 {
                     hasIntersection = true;
                     break;
@@ -89,20 +98,20 @@ bool Weapon::intersectsSolidTile(SDL_FRect _rect)
     return hasIntersection;
 }
 
-void Weapon::damagePlayersInRange(SDL_FRect _rect, int damage)
+void Weapon::damagePlayersInRange(SDL_FRect rect, int damage)
 {
     for (size_t i = 0; i < state.game.players.size(); ++i)
     {
         SDL_FRect playerRect = state.game.players[i].positionRect();
 
-        if (SDL_HasIntersectionF(&playerRect, &_rect))
+        if (SDL_HasIntersectionF(&playerRect, &rect))
         {
             state.game.players[i].damagePlayer(damage);
         }
     }
 }
 
-void Weapon::explodeSolidTilesInRange(SDL_FRect _rect)
+void Weapon::explodeSolidTilesInRange(SDL_FRect rect)
 {
     for (int i = 0; i < GRID_ROWS; ++i)
     {
@@ -113,7 +122,7 @@ void Weapon::explodeSolidTilesInRange(SDL_FRect _rect)
             {
                 SDL_FRect tileRect = state.game.map.tileGrid[i][j].positionRect();
 
-                if (SDL_HasIntersectionF(&_rect, &tileRect))
+                if (SDL_HasIntersectionF(&rect, &tileRect))
                 {
                     state.game.map.tileGrid[i][j].setTexture(TextureType::NONE);
                     SDL_FPoint destroyRockPosition = {state.game.map.tileGrid[i][j].position.x + state.game.map.tileGrid[i][j].width / 2, state.game.map.tileGrid[i][j].position.y + state.game.map.tileGrid[i][j].height / 2};

@@ -20,10 +20,10 @@ public:
     void mouseMove(int x, int y);
     void fireWeapon();
     void updateLaunchAngle(SDL_FPoint start);
-    bool intersectsSolidTile(SDL_FRect _rect);
-    void damagePlayersInRange(SDL_FRect _rect, int damage);
-    void explodeSolidTilesInRange(SDL_FRect _rect);
-    void renderAimDirection(SDL_FPoint start, float firingLength);
+    bool intersectsSolidTile(SDL_FRect rect);
+    void damagePlayersInRange(SDL_FRect rect, int damage);
+    void explodeSolidTilesInRange(SDL_FRect rect);
+    void renderAimDirection(SDL_FPoint start, float length);
 };
 
 #endif

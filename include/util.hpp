@@ -11,4 +11,7 @@ namespace Util
     void drawRectangle(SDL_FRect positionRect, SDL_Color backgroundColor, SDL_Color borderColor, float borderWidth);
     void drawTriangle(SDL_FPoint position, int width, SDL_Color color, float angle);
     float calculateDistance(SDL_FPoint point1, SDL_FPoint point2);
+    bool lineIntersectsRect(SDL_FPoint lineStart, SDL_FPoint lineEnd, SDL_FRect rect);
+    bool doLinesIntersect(SDL_FPoint lineStart1, SDL_FPoint lineEnd1, SDL_FPoint lineStart2, SDL_FPoint lineEnd2);
+
 }

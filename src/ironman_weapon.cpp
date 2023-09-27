@@ -48,7 +48,7 @@ void IronmanWeapon::update()
 
             SDL_FRect impactRange = {impactPosition.x - 50, impactPosition.y - 50, 100, 100};
 
-            damagePlayersInRange(impactRange, 10);
+            damagePlayersInRange(impactRange, 20);
             explodeSolidTilesInRange(impactRange);
 
             state.game.setWeaponSelection();
