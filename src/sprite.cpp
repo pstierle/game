@@ -30,3 +30,8 @@ SDL_FRect Sprite::positionRect()
 {
     return {position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
 }
+
+SDL_FPoint Sprite::center()
+{
+    return {position.x + width / 2, position.y + height / 2};
+}

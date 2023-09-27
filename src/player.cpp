@@ -44,6 +44,11 @@ SDL_FRect Player::positionRect()
     return {position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
 }
 
+SDL_FPoint Player::center()
+{
+    return {position.x + width / 2, position.y + height / 2};
+}
+
 void Player::updatePosition()
 {
     if (SDL_GetTicks() - bounceStart < 300 && bounceStart != 0)

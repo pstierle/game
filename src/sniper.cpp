@@ -25,7 +25,7 @@ void Sniper::render()
 
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        renderAimDirection(400, 0);
+        renderAimDirection(aimingSprite.center(), 400);
     }
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
@@ -83,15 +83,15 @@ void Sniper::update()
         }
         else
         {
-            float initialSpeed = 700.0f;
+            float speed = 1000.0f;
             float deltaTime = state.deltaTime;
             float radians = launchAngle * (3.14159265359f / 180.0f);
 
-            float initialVelocityX = initialSpeed * cos(radians);
-            float initialVelocityY = initialSpeed * sin(radians);
+            float velocityX = speed * cos(radians);
+            float velocityY = speed * sin(radians);
 
-            fireingSprite.position.x += initialVelocityX * deltaTime;
-            fireingSprite.position.y += initialVelocityY * deltaTime;
+            fireingSprite.position.x += velocityX * deltaTime;
+            fireingSprite.position.y += velocityY * deltaTime;
         }
     }
 }

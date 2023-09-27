@@ -22,7 +22,7 @@ public:
     bool intersectsSolidTile(SDL_FRect _rect);
     void damagePlayersInRange(SDL_FRect _rect, int damage);
     void explodeSolidTilesInRange(SDL_FRect _rect);
-    void renderAimDirection(float firingLength, float offset);
+    void renderAimDirection(SDL_FPoint start, float firingLength);
 };
 
 #endif

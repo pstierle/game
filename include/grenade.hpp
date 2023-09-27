@@ -7,9 +7,6 @@ class Grenade : public Weapon
 {
 public:
     Sprite fireingSprite;
-
-    float velocityX;
-    float velocityY;
     Uint16 throwStartTime;
 
     Grenade(int _cost);

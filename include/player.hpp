@@ -32,6 +32,7 @@ public:
     void bounceBack(float launchAngle);
 
     SDL_FRect positionRect();
+    SDL_FPoint center();
 };
 
 #endif

@@ -30,7 +30,7 @@ void Shotgun::render()
 
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        renderAimDirection(150, 0);
+        renderAimDirection(aimingSprite.center(), 150);
     }
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)

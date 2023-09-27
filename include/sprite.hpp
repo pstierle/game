@@ -19,6 +19,7 @@ public:
     void setTexture(TextureType _textureType);
     void render();
     SDL_FRect positionRect();
+    SDL_FPoint center();
 };
 
 #endif

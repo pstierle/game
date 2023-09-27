@@ -6,8 +6,6 @@ Grenade::Grenade(int _cost) : Weapon(_cost)
 {
     fireingSprite = Sprite(TextureType::WEAPON_GRENADE, {0, 0}, 22, 22);
     throwStartTime = 0;
-    velocityX = 0;
-    velocityY = 0;
 }
 
 void Grenade::render()
@@ -18,7 +16,7 @@ void Grenade::render()
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        renderAimDirection(100, 0);
+        renderAimDirection(state.game.currentPlayer().center(), 150);
     }
 }
 
@@ -62,20 +60,11 @@ void Grenade::update()
             float radians = launchAngle * (3.14159265359f / 180.0f);
             float elapsed = static_cast<float>(SDL_GetTicks() - throwStartTime) / 2000.0f;
 
-            float initialVelocityX = cos(radians);
-            float initialVelocityY = sin(radians);
+            float velocityX = cos(radians);
+            float velocityY = sin(radians) + elapsed;
 
-            if (false)
-            {
-
-                fireingSprite.position.x += initialVelocityX * speed * state.deltaTime;
-                fireingSprite.position.y += initialVelocityY * speed * state.deltaTime;
-            }
-            else
-            {
-                fireingSprite.position.x += speed * initialVelocityX * state.deltaTime;
-                fireingSprite.position.y += speed * (initialVelocityY * elapsed) * elapsed * state.deltaTime * -1;
-            }
+            fireingSprite.position.x += velocityX * speed * state.deltaTime;
+            fireingSprite.position.y += velocityY * speed * state.deltaTime;
         }
     }
 }
@@ -84,11 +73,6 @@ void Grenade::leftMouseUp()
 {
     Player player = state.game.currentPlayer();
     fireingSprite.position = {player.position.x, player.position.y};
-
-    float radians = launchAngle * (3.14159265359f / 180.0f);
-    velocityX = cos(radians);
-    velocityY = sin(radians);
-
     throwStartTime = SDL_GetTicks();
     fireWeapon();
 }

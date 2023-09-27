@@ -8,14 +8,14 @@ WeaponMenu::WeaponMenu()
 
     // reserve first slot for special weapon
     menuWeapons[0] = MenuWeapon();
-    menuWeapons[1] = MenuWeapon(WeaponType::AIRSTRIKE, TextureType::WEAPON_AIRSTRIKE, {0, 0}, "Airstrike", 50);
-    menuWeapons[2] = MenuWeapon(WeaponType::GRENADE, TextureType::WEAPON_GRENADE, {0, 0}, "Grenade", 50);
-    menuWeapons[3] = MenuWeapon(WeaponType::SHOTGUN, TextureType::WEAPON_SHOTGUN, {0, 0}, "Shotgun", 50);
-    menuWeapons[4] = MenuWeapon(WeaponType::SNIPER, TextureType::WEAPON_SNIPER, {0, 0}, "Sniper", 50);
+    menuWeapons[1] = MenuWeapon(WeaponType::AIRSTRIKE, TextureType::WEAPON_AIRSTRIKE, {0, 0}, "Airstrike", 20);
+    menuWeapons[2] = MenuWeapon(WeaponType::GRENADE, TextureType::WEAPON_GRENADE, {0, 0}, "Grenade", 20);
+    menuWeapons[3] = MenuWeapon(WeaponType::SHOTGUN, TextureType::WEAPON_SHOTGUN, {0, 0}, "Shotgun", 20);
+    menuWeapons[4] = MenuWeapon(WeaponType::SNIPER, TextureType::WEAPON_SNIPER, {0, 0}, "Sniper", 20);
 
-    specialWeapons[WeaponType::SUPERMAN] = MenuWeapon(WeaponType::SUPERMAN, TextureType::WEAPON_SUPERMAN, {0, 0}, "Laser", 50);
-    specialWeapons[WeaponType::IRONMAN] = MenuWeapon(WeaponType::IRONMAN, TextureType::WEAPON_IRONMAN, {0, 0}, "Rockets", 50);
-    specialWeapons[WeaponType::HULK] = MenuWeapon(WeaponType::HULK, TextureType::WEAPON_HULK, {0, 0}, "Smash", 50);
+    specialWeapons[WeaponType::SUPERMAN] = MenuWeapon(WeaponType::SUPERMAN, TextureType::WEAPON_SUPERMAN, {0, 0}, "Laser", 20);
+    specialWeapons[WeaponType::IRONMAN] = MenuWeapon(WeaponType::IRONMAN, TextureType::WEAPON_IRONMAN, {0, 0}, "Rockets", 20);
+    specialWeapons[WeaponType::HULK] = MenuWeapon(WeaponType::HULK, TextureType::WEAPON_HULK, {0, 0}, "Smash", 20);
 
     playerInfoText = Text({20.0f, 60.0f}, "");
 

@@ -26,14 +26,9 @@ void Weapon::leftMouseUp()
 {
 }
 
-void Weapon::renderAimDirection(float firingLength, float offset)
+void Weapon::renderAimDirection(SDL_FPoint start, float firingLength)
 {
-    (void)offset;
-
-    Player player = state.game.currentPlayer();
-    SDL_FPoint playerPosition = {player.position.x + 16, player.position.y + 16};
-
-    SDL_FPoint direction = {static_cast<float>(mousePosition.x) - playerPosition.x, static_cast<float>(mousePosition.y) - playerPosition.y};
+    SDL_FPoint direction = {static_cast<float>(mousePosition.x) - start.x, static_cast<float>(mousePosition.y) - start.y};
 
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
@@ -44,10 +39,10 @@ void Weapon::renderAimDirection(float firingLength, float offset)
         launchAngle = atan2(direction.y, direction.x) * (180.0f / 3.14159265359f);
     }
 
-    SDL_FPoint endPoint = {playerPosition.x + direction.x * firingLength, playerPosition.y + direction.y * firingLength};
+    SDL_FPoint endPoint = {start.x + direction.x * firingLength, start.y + direction.y * firingLength};
 
     SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
-    SDL_RenderDrawLineF(state.renderer, playerPosition.x, playerPosition.y, endPoint.x, endPoint.y);
+    SDL_RenderDrawLineF(state.renderer, start.x, start.y, endPoint.x, endPoint.y);
 }
 
 void Weapon::fireWeapon()
