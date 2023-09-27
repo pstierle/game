@@ -128,6 +128,11 @@ void WeaponMenu::mouseClick()
                 state.game.selectedWeapon = new IronmanWeapon(targetWeapon.cost);
                 state.game.gameState = GameStateType::WEAPON_SELECTED;
             }
+            if (targetWeapon.type == WeaponType::SUPERMAN)
+            {
+                state.game.selectedWeapon = new SupermanWeapon(targetWeapon.cost);
+                state.game.gameState = GameStateType::WEAPON_SELECTED;
+            }
             hoveredIndex = -1;
         }
     }

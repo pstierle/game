@@ -19,6 +19,7 @@ public:
     virtual void leftMouseUp();
     void mouseMove(int x, int y);
     void fireWeapon();
+    void updateLaunchAngle(SDL_FPoint start);
     bool intersectsSolidTile(SDL_FRect _rect);
     void damagePlayersInRange(SDL_FRect _rect, int damage);
     void explodeSolidTilesInRange(SDL_FRect _rect);

@@ -22,6 +22,12 @@ void Grenade::render()
 
 void Grenade::update()
 {
+    if (state.game.gameState == GameStateType::WEAPON_SELECTED)
+    {
+        Player player = state.game.currentPlayer();
+        updateLaunchAngle({player.position.x, player.position.y});
+    }
+
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
         int windowWidth, windowHeight;

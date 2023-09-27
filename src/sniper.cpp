@@ -36,6 +36,10 @@ void Sniper::render()
 
 void Sniper::update()
 {
+    if (state.game.gameState == GameStateType::WEAPON_SELECTED)
+    {
+        updateLaunchAngle(aimingSprite.center());
+    }
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
         int windowWidth, windowHeight;

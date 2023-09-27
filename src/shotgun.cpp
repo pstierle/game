@@ -50,6 +50,11 @@ void Shotgun::update()
 {
     aimingSprite.position = {state.game.currentPlayer().position.x + 10, state.game.currentPlayer().position.y + 10};
 
+    if (state.game.gameState == GameStateType::WEAPON_SELECTED)
+    {
+        updateLaunchAngle({aimingSprite.center().x, aimingSprite.center().y});
+    }
+
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
         int windowWidth, windowHeight;

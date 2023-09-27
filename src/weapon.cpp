@@ -26,10 +26,9 @@ void Weapon::leftMouseUp()
 {
 }
 
-void Weapon::renderAimDirection(SDL_FPoint start, float firingLength)
+void Weapon::updateLaunchAngle(SDL_FPoint start)
 {
     SDL_FPoint direction = {static_cast<float>(mousePosition.x) - start.x, static_cast<float>(mousePosition.y) - start.y};
-
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
     if (length > 0)
@@ -38,7 +37,11 @@ void Weapon::renderAimDirection(SDL_FPoint start, float firingLength)
         direction.y /= length;
         launchAngle = atan2(direction.y, direction.x) * (180.0f / 3.14159265359f);
     }
+}
 
+void Weapon::renderAimDirection(SDL_FPoint start, float firingLength)
+{
+    SDL_FPoint direction = {static_cast<float>(mousePosition.x) - start.x, static_cast<float>(mousePosition.y) - start.y};
     SDL_FPoint endPoint = {start.x + direction.x * firingLength, start.y + direction.y * firingLength};
 
     SDL_SetRenderDrawColor(state.renderer, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b, 255);
