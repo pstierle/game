@@ -4,14 +4,6 @@ extern State state;
 
 namespace Util
 {
-    bool intersects(SDL_FRect rect1, SDL_FRect rect2)
-    {
-        return (rect1.x >= rect2.x &&
-                rect1.y >= rect2.y &&
-                (rect1.x + rect1.w) <= (rect2.x + rect2.w) &&
-                (rect1.y + rect1.h) <= (rect2.y + rect2.h));
-    }
-
     bool pointInRect(SDL_FPoint point, SDL_FRect rect)
     {
         return point.x >= rect.x && point.x < rect.x + rect.w &&
@@ -48,21 +40,17 @@ namespace Util
 
     void drawRectangle(SDL_FRect positionRect, SDL_Color backgroundColor, SDL_Color borderColor, float borderWidth)
     {
-        // Set the background color
+        SDL_SetRenderDrawColor(state.renderer, borderColor.r, borderColor.g, borderColor.b, borderColor.a);
+        SDL_FRect borderRect = {
+            positionRect.x - borderWidth,
+            positionRect.y - borderWidth,
+            positionRect.w + borderWidth * 2,
+            positionRect.h + borderWidth * 2};
+
+        SDL_RenderFillRectF(state.renderer, &borderRect);
+
         SDL_SetRenderDrawColor(state.renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         SDL_RenderFillRectF(state.renderer, &positionRect);
-
-        // Set the border color
-        SDL_SetRenderDrawColor(state.renderer, borderColor.r, borderColor.g, borderColor.b, borderColor.a);
-
-        // Draw the border
-        SDL_FRect borderRect = {
-            positionRect.x - borderWidth / 2,
-            positionRect.y - borderWidth / 2,
-            positionRect.w + borderWidth,
-            positionRect.h + borderWidth};
-
-        SDL_RenderDrawRectF(state.renderer, &borderRect);
     }
 
     float calculateDistance(SDL_FPoint point1, SDL_FPoint point2)

@@ -138,10 +138,10 @@ void Player::renderModel()
 void Player::renderInfoText()
 {
     SDL_FRect nameBackGroundRect = {nameText.position.x - 4 - static_cast<float>(nameText.width) / 2, nameText.position.y, static_cast<float>(nameText.width) + 8, 20.0f};
-    Util::drawRectangle(nameBackGroundRect, COLOR_GREY, color, 2);
+    Util::drawRectangle(nameBackGroundRect, COLOR_GREY, color, 1);
 
     SDL_FRect healthBackGroundRect = {healthText.position.x - 4 - static_cast<float>(healthText.width) / 2, healthText.position.y, static_cast<float>(healthText.width) + 8, 20.0f};
-    Util::drawRectangle(healthBackGroundRect, COLOR_GREY, color, 2);
+    Util::drawRectangle(healthBackGroundRect, COLOR_GREY, color, 1);
 
     nameText.render();
     healthText.render();
