@@ -6,7 +6,7 @@ Sniper::Sniper(int _cost) : Weapon(_cost)
 {
     aimingSprite = Sprite(TextureType::WEAPON_SNIPER, {0, 0}, 32, 32);
     fireingSprite = Sprite(TextureType::BULLET, {0, 0}, 10, 10);
-    aimingSprite.position = {state.game.currentPlayer().position.x, state.game.currentPlayer().position.y};
+    aimingSprite.position = {state.game.currentPlayer().position.x + 10, state.game.currentPlayer().position.y + 10};
 }
 
 void Sniper::render()

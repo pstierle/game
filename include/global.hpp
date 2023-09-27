@@ -29,6 +29,7 @@
 #include "shotgun.hpp"
 #include "sniper.hpp"
 #include "grenade.hpp"
+#include "ironman_weapon.hpp"
 #include "menu_weapon.hpp"
 #include "weapon_menu.hpp"
 #include "map.hpp"

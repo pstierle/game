@@ -55,7 +55,8 @@ void Airstrike::update()
         }
         else
         {
-            fireingSprite.position.y += 1 * GRAVITY * state.deltaTime;
+            float speed = 500.0f;
+            fireingSprite.position.y += 1 * state.deltaTime * speed;
         }
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)

@@ -21,12 +21,10 @@ void Shotgun::render()
 
     if (launchAngle >= -90.0f && launchAngle <= 90.0f)
     {
-        positionRect.x += 10;
         SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_NONE);
     }
     else
     {
-        positionRect.x -= 10;
         SDL_RenderCopyExF(state.renderer, aimingSprite.texture, &sourceRect, &positionRect, launchAngle, NULL, SDL_FLIP_VERTICAL);
     }
 
@@ -46,10 +44,7 @@ void Shotgun::render()
 
 void Shotgun::update()
 {
-    float xOffset = state.game.currentPlayer().width - 5 - aimingSprite.width;
-    float yOffset = state.game.currentPlayer().height - 5 - aimingSprite.height;
-
-    aimingSprite.position = {state.game.currentPlayer().position.x + (xOffset / 2), state.game.currentPlayer().position.y + (yOffset / 2)};
+    aimingSprite.position = {state.game.currentPlayer().position.x + 10, state.game.currentPlayer().position.y + 10};
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
@@ -70,8 +65,6 @@ void Shotgun::update()
 
             SDL_FRect fireingSpritePosition = fireingSprites[i].positionRect();
 
-            Player *intersectingPlayer = nullptr;
-
             for (size_t i = 0; i < state.game.players.size(); ++i)
             {
                 if (state.game.players[i].name == state.game.currentPlayer().name)
@@ -83,13 +76,8 @@ void Shotgun::update()
 
                 if (SDL_HasIntersectionF(&playerRect, &fireingSpritePosition))
                 {
-                    intersectingPlayer = &state.game.players[i];
+                    state.game.players[i].damagePlayer(2);
                 }
-            }
-
-            if (intersectingPlayer != nullptr)
-            {
-                intersectingPlayer->damagePlayer(10);
             }
 
             if (intersectsSolidTile(fireingSpritePosition) || Util::calculateDistance(state.game.currentPlayer().position, {fireingSpritePosition.x, fireingSpritePosition.y}) > 150)
@@ -134,11 +122,9 @@ void Shotgun::leftMouseUp()
     {
         if (i == static_cast<size_t>(state.game.currentTurn))
         {
-            // Calculate the initial positions of the bullets
             float xOffset = state.game.players[i].width / 2;
             float yOffset = state.game.players[i].height / 2;
 
-            // Offset each bullet's position differently
             for (size_t j = 0; j < fireingSprites.size(); ++j)
             {
                 float angleOffset = (j - fireingSprites.size() / 2) * 20.0f; // Adjust angle offset as needed
