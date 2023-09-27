@@ -6,7 +6,7 @@ Shotgun::Shotgun(int _cost) : Weapon(_cost)
 {
     aimingSprite = Sprite(TextureType::WEAPON_SHOTGUN, {0, 0}, 32, 32);
 
-    fireingSprites.resize(10, Sprite());
+    fireingSprites.resize(3, Sprite());
 
     for (size_t i = 0; i < fireingSprites.size(); ++i)
     {
@@ -37,6 +37,10 @@ void Shotgun::render()
     {
         for (size_t i = 0; i < fireingSprites.size(); ++i)
         {
+            if (ignoreSprite(i))
+            {
+                continue;
+            }
             fireingSprites[i].render();
         }
     }
@@ -51,15 +55,16 @@ void Shotgun::update()
         int windowWidth, windowHeight;
         SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
 
-        std::vector<size_t> bulletsToRemove;
-
         for (size_t i = 0; i < fireingSprites.size(); ++i)
         {
-            bool remove = false;
+            if (ignoreSprite(i))
+            {
+                continue;
+            }
 
             if (fireingSprites[i].position.x <= 0 || fireingSprites[i].position.y <= 0 || fireingSprites[i].position.x + fireingSprites[i].width >= windowWidth || fireingSprites[i].position.y + fireingSprites[i].height >= windowHeight)
             {
-                remove = true;
+                explodedSprites.push_back(i);
                 continue;
             }
 
@@ -82,7 +87,7 @@ void Shotgun::update()
 
             if (intersectsSolidTile(fireingSpritePosition) || Util::calculateDistance(state.game.currentPlayer().position, {fireingSpritePosition.x, fireingSpritePosition.y}) > 150)
             {
-                remove = true;
+                explodedSprites.push_back(i);
             }
             else
             {
@@ -95,19 +100,9 @@ void Shotgun::update()
                 fireingSprites[i].position.x += initialVelocityX * state.deltaTime;
                 fireingSprites[i].position.y += initialVelocityY * state.deltaTime;
             }
-
-            if (remove)
-            {
-                bulletsToRemove.push_back(i);
-            }
         }
 
-        for (int i = bulletsToRemove.size() - 1; i >= 0; --i)
-        {
-            fireingSprites.erase(fireingSprites.begin() + bulletsToRemove[i]);
-        }
-
-        if (fireingSprites.size() == 0)
+        if (explodedSprites.size() == 3)
         {
             state.game.setWeaponSelection();
             state.game.nextTurn();
@@ -118,29 +113,15 @@ void Shotgun::update()
 
 void Shotgun::leftMouseUp()
 {
-    for (size_t i = 0; i < state.game.players.size(); ++i)
-    {
-        if (i == static_cast<size_t>(state.game.currentTurn))
-        {
-            float xOffset = state.game.players[i].width / 2;
-            float yOffset = state.game.players[i].height / 2;
+    fireingSprites[0].position = {aimingSprite.center().x, aimingSprite.center().y - 10};
+    fireingSprites[1].position = {aimingSprite.center().x, aimingSprite.center().y};
+    fireingSprites[2].position = {aimingSprite.center().x, aimingSprite.center().y + 10};
 
-            for (size_t j = 0; j < fireingSprites.size(); ++j)
-            {
-                float angleOffset = (j - fireingSprites.size() / 2) * 20.0f; // Adjust angle offset as needed
-                float radians = (launchAngle + angleOffset) * (3.14159265359f / 180.0f);
-
-                fireingSprites[j].position = {
-                    state.game.players[i].position.x + xOffset * cos(radians) - yOffset * sin(radians),
-                    state.game.players[i].position.y + xOffset * sin(radians) + yOffset * cos(radians)};
-            }
-
-            state.game.players[i].bounceBack(launchAngle);
-
-            break;
-        }
-    }
-
-    // Fire the weapon
     fireWeapon();
+}
+
+bool Shotgun::ignoreSprite(size_t index)
+{
+    auto it = std::find(explodedSprites.begin(), explodedSprites.end(), index);
+    return it != explodedSprites.end();
 }
