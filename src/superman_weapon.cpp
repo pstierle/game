@@ -84,6 +84,7 @@ void SupermanWeapon::update()
 
 void SupermanWeapon::leftMouseUp()
 {
+    state.game.weaponMenu.specialWeapons[WeaponType::SUPERMAN].cost = 10000;
     Player player = state.game.currentPlayer();
     fireWeapon();
 }

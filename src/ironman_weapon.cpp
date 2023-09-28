@@ -105,6 +105,7 @@ void IronmanWeapon::update()
 
 void IronmanWeapon::leftMouseUp()
 {
+    state.game.weaponMenu.specialWeapons[WeaponType::IRONMAN].cost = 10000;
     Player player = state.game.currentPlayer();
     fireingSprite.position = {player.position.x + player.width / 2, player.position.y};
     launchStartTime = SDL_GetTicks();

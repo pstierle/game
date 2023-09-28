@@ -84,7 +84,7 @@ void Player::updatePosition()
                     {
                         yAxisIntersection = true;
                     }
-                    else if (playerRect.x + playerRect.w < rockRect.x + rockRect.w)
+                    if (playerRect.x + playerRect.w < rockRect.x + rockRect.w)
                     {
                         xAxisIntersection = true;
                     }

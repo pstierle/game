@@ -6,6 +6,8 @@
 class Game
 {
 public:
+    Uint32 startTime;
+    Uint32 endTime;
     Uint32 previousTime;
     std::vector<Player> players;
     Player *lastPlayer;
@@ -14,8 +16,10 @@ public:
     Weapon *selectedWeapon;
     GameStateType gameState;
     Text gameOverText;
+    Text fpsCounterText;
 
     int currentTurn;
+    int frameCount;
     bool running;
     bool gameOver;
 

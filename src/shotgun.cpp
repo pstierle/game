@@ -122,6 +122,14 @@ void Shotgun::leftMouseUp()
     fireingSprites[1].position = {aimingSprite.center().x, aimingSprite.center().y};
     fireingSprites[2].position = {aimingSprite.center().x, aimingSprite.center().y + 10};
 
+    for (size_t i = 0; i < state.game.players.size(); ++i)
+    {
+        if (i == static_cast<size_t>(state.game.currentTurn))
+        {
+            state.game.currentPlayer().bounceBack(launchAngle);
+        }
+    }
+
     fireWeapon();
 }
 

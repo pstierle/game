@@ -26,6 +26,11 @@ bool Game::setup()
     gameOverText = Text({0, 0}, "");
     gameOverText.center = true;
 
+    fpsCounterText = Text({0, 10}, "", COLOR_DARK_GREY);
+
+    startTime = 0;
+    endTime = 0;
+    frameCount = 0;
     gameOver = false;
     lastPlayer = nullptr;
     running = true;
@@ -86,11 +91,11 @@ void Game::listen_events()
 
 void Game::update()
 {
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
+
     if (gameOver)
     {
-        int windowWidth, windowHeight;
-        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
-
         gameOverText.position = {static_cast<float>(windowWidth) / 2, static_cast<float>(windowHeight) / 2};
 
         if (lastPlayer == nullptr)
@@ -132,6 +137,19 @@ void Game::update()
     }
 
     checkGameOver();
+
+    frameCount++;
+    endTime = SDL_GetTicks();
+    Uint32 elapsedTime = endTime - startTime;
+    if (elapsedTime >= 100)
+    {
+        float fps = frameCount / (elapsedTime / 1000.0f);
+        frameCount = 0;
+        startTime = endTime;
+
+        fpsCounterText.text = std::to_string(static_cast<int>(fps));
+        fpsCounterText.position.x = windowWidth - fpsCounterText.width - 10;
+    }
 }
 
 void Game::render()
@@ -139,7 +157,7 @@ void Game::render()
     SDL_RenderClear(state.renderer);
 
     map.render();
-
+    fpsCounterText.render();
     weaponMenu.render();
 
     for (size_t i = 0; i < players.size(); ++i)

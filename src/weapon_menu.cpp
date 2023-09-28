@@ -13,9 +13,9 @@ WeaponMenu::WeaponMenu()
     menuWeapons[3] = MenuWeapon(WeaponType::SHOTGUN, TextureType::WEAPON_SHOTGUN, {0, 0}, "Shotgun", 20);
     menuWeapons[4] = MenuWeapon(WeaponType::SNIPER, TextureType::WEAPON_SNIPER, {0, 0}, "Sniper", 20);
 
-    specialWeapons[WeaponType::SUPERMAN] = MenuWeapon(WeaponType::SUPERMAN, TextureType::WEAPON_SUPERMAN, {0, 0}, "Laser", 20);
-    specialWeapons[WeaponType::IRONMAN] = MenuWeapon(WeaponType::IRONMAN, TextureType::WEAPON_IRONMAN, {0, 0}, "Rockets", 20);
-    specialWeapons[WeaponType::HULK] = MenuWeapon(WeaponType::HULK, TextureType::WEAPON_HULK, {0, 0}, "Smash", 20);
+    specialWeapons[WeaponType::SUPERMAN] = MenuWeapon(WeaponType::SUPERMAN, TextureType::WEAPON_SUPERMAN, {0, 0}, "Laser", 0);
+    specialWeapons[WeaponType::IRONMAN] = MenuWeapon(WeaponType::IRONMAN, TextureType::WEAPON_IRONMAN, {0, 0}, "Rockets", 0);
+    specialWeapons[WeaponType::HULK] = MenuWeapon(WeaponType::HULK, TextureType::WEAPON_HULK, {0, 0}, "Smash", 0);
 
     playerInfoText = Text({20.0f, 60.0f}, "");
 
