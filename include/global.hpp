@@ -20,6 +20,7 @@
 #include "weapon_type.hpp"
 #include "game_state_type.hpp"
 
+#include "entity.hpp"
 #include "particle.hpp"
 #include "texture_loader.hpp"
 #include "sprite.hpp"

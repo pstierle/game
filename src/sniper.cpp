@@ -25,7 +25,7 @@ void Sniper::render()
 
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        renderAimDirection(aimingSprite.center(), 400);
+        renderAimDirection(aimingSprite.positionCenter(), 400);
     }
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
@@ -38,7 +38,7 @@ void Sniper::update()
 {
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        updateLaunchAngle(aimingSprite.center());
+        updateLaunchAngle(aimingSprite.positionCenter());
     }
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {

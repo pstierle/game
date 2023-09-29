@@ -2,16 +2,15 @@
 
 extern State state;
 
-Player::Player()
+Player::Player() : Entity()
 {
 }
 
-Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color, int _width, int _height, WeaponType _specialWeaponType)
+Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color, int _width, int _height, WeaponType _specialWeaponType) : Entity(_position, _width, _height)
 {
     textureType = _textureType;
     texture = state.textureLoader.get(_textureType);
     name = _name;
-    position = _position;
     color = _color;
     nameText = Text({0, 0}, name, color);
     healthText = Text({0, 0}, "100", color);
@@ -22,8 +21,6 @@ Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position
     bounceStart = 0;
     xVelocity = 0;
     yVelocity = 0;
-    width = _width;
-    height = _height;
     specialWeaponType = _specialWeaponType;
 }
 
@@ -37,16 +34,6 @@ void Player::update()
 {
     updatePosition();
     updateInfoText();
-}
-
-SDL_FRect Player::positionRect()
-{
-    return {position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
-}
-
-SDL_FPoint Player::center()
-{
-    return {position.x + width / 2, position.y + height / 2};
 }
 
 void Player::updatePosition()

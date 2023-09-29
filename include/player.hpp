@@ -3,10 +3,9 @@
 
 #include "global.hpp"
 
-class Player
+class Player : public Entity
 {
 public:
-    SDL_FPoint position;
     SDL_Texture *texture;
     TextureType textureType;
     Text nameText, healthText;
@@ -15,24 +14,21 @@ public:
     Uint32 bounceStart;
     WeaponType specialWeaponType;
 
-    int xVelocity, yVelocity, credits, health, launchAngle, width, height;
+    int xVelocity, yVelocity, credits, health, launchAngle;
 
     Player();
     Player(TextureType _textureType, std::string _name, SDL_FPoint _position, SDL_Color _color, int _width, int _height, WeaponType _specialWeaponType);
 
-    void update();
+    void update() override;
     void updatePosition();
     void updateInfoText();
 
-    void render();
+    void render() override;
     void renderModel();
     void renderInfoText();
 
     void damagePlayer(int damage);
     void bounceBack(float launchAngle);
-
-    SDL_FRect positionRect();
-    SDL_FPoint center();
 };
 
 #endif

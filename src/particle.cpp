@@ -2,13 +2,10 @@
 
 extern State state;
 
-Particle::Particle(SDL_FPoint _position, int _width, int _height, int _lifeTime, int _r, int _g, int _b, int _a)
+Particle::Particle(SDL_FPoint _position, int _width, int _height, int _lifeTime, int _r, int _g, int _b, int _a) : Entity(_position, _width, _height)
 {
     startLife = SDL_GetTicks();
-    position = _position;
     lifeTime = _lifeTime;
-    width = _width;
-    height = _height;
     r = _r;
     g = _g;
     b = _b;

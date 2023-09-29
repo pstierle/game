@@ -3,17 +3,16 @@
 
 #include "global.hpp"
 
-class Particle
+class Particle : Entity
 {
 
 public:
     Uint32 startLife;
-    SDL_FPoint position;
     float velX, velY;
-    int lifeTime, width, height, r, g, b, a;
+    int lifeTime, r, g, b, a;
 
     Particle(SDL_FPoint _position, int _width, int _height, int _lifeTime, int _r, int _g, int _b, int _a);
-    void update();
-    void render();
+    void update() override;
+    void render() override;
 };
 #endif

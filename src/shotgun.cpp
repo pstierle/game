@@ -30,7 +30,7 @@ void Shotgun::render()
 
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        renderAimDirection(aimingSprite.center(), 150);
+        renderAimDirection(aimingSprite.positionCenter(), 150);
     }
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
@@ -52,7 +52,7 @@ void Shotgun::update()
 
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        updateLaunchAngle({aimingSprite.center().x, aimingSprite.center().y});
+        updateLaunchAngle({aimingSprite.positionCenter().x, aimingSprite.positionCenter().y});
     }
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
@@ -118,9 +118,9 @@ void Shotgun::update()
 
 void Shotgun::leftMouseUp()
 {
-    fireingSprites[0].position = {aimingSprite.center().x, aimingSprite.center().y - 10};
-    fireingSprites[1].position = {aimingSprite.center().x, aimingSprite.center().y};
-    fireingSprites[2].position = {aimingSprite.center().x, aimingSprite.center().y + 10};
+    fireingSprites[0].position = {aimingSprite.positionCenter().x, aimingSprite.positionCenter().y - 10};
+    fireingSprites[1].position = {aimingSprite.positionCenter().x, aimingSprite.positionCenter().y};
+    fireingSprites[2].position = {aimingSprite.positionCenter().x, aimingSprite.positionCenter().y + 10};
 
     for (size_t i = 0; i < state.game.players.size(); ++i)
     {

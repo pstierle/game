@@ -13,8 +13,8 @@ void SupermanWeapon::render()
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        SDL_FPoint leftEyePosition = {state.game.currentPlayer().center().x - 7, state.game.currentPlayer().center().y - 6};
-        SDL_FPoint rightEyePosition = {state.game.currentPlayer().center().x - 1, state.game.currentPlayer().center().y - 6};
+        SDL_FPoint leftEyePosition = {state.game.currentPlayer().positionCenter().x - 7, state.game.currentPlayer().positionCenter().y - 6};
+        SDL_FPoint rightEyePosition = {state.game.currentPlayer().positionCenter().x - 1, state.game.currentPlayer().positionCenter().y - 6};
 
         renderAimDirection(leftEyePosition, 5000);
         renderAimDirection(rightEyePosition, 5000);
@@ -30,7 +30,7 @@ void SupermanWeapon::update()
     }
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
-        SDL_FPoint leftEyePosition = {state.game.currentPlayer().center().x - 7, state.game.currentPlayer().center().y - 6};
+        SDL_FPoint leftEyePosition = {state.game.currentPlayer().positionCenter().x - 7, state.game.currentPlayer().positionCenter().y - 6};
 
         SDL_FPoint direction = {static_cast<float>(mousePosition.x) - leftEyePosition.x, static_cast<float>(mousePosition.y) - leftEyePosition.y};
 

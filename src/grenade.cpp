@@ -16,7 +16,7 @@ void Grenade::render()
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
-        renderAimDirection(state.game.currentPlayer().center(), 150);
+        renderAimDirection(state.game.currentPlayer().positionCenter(), 150);
     }
 }
 

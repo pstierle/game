@@ -146,4 +146,6 @@ namespace Util
 
         return false;
     }
+
+    void createWaterParticles(SDL_FPoint position) {}
 }
