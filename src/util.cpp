@@ -25,6 +25,15 @@ namespace Util
         return distribution(rng);
     }
 
+    void drawLine(SDL_FPoint start, SDL_Color color, float angle, int length)
+    {
+        float endX = start.x + length * std::cos(angle);
+        float endY = start.y + length * std::sin(angle);
+
+        SDL_SetRenderDrawColor(state.renderer, color.r, color.g, color.b, color.a);
+        SDL_RenderDrawLineF(state.renderer, start.x, start.y, endX, endY);
+    }
+
     Particle bombExplosionParticle(SDL_FPoint position)
     {
         SDL_FPoint randomPosition = {static_cast<float>(randomInRange(position.x - 50, position.x + 50)), static_cast<float>(randomInRange(position.y - 50, position.y + 50))};

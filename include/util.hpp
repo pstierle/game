@@ -14,5 +14,5 @@ namespace Util
     float calculateDistance(SDL_FPoint point1, SDL_FPoint point2);
     bool lineIntersectsRect(SDL_FPoint lineStart, SDL_FPoint lineEnd, SDL_FRect rect);
     bool doLinesIntersect(SDL_FPoint lineStart1, SDL_FPoint lineEnd1, SDL_FPoint lineStart2, SDL_FPoint lineEnd2);
-
+    void drawLine(SDL_FPoint start, SDL_Color color, float angle, int length);
 }
