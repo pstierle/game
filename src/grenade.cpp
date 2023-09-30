@@ -53,7 +53,7 @@ void Grenade::update()
 
             SDL_FRect impactRange = {impactPosition.x - 50, impactPosition.y - 50, 100, 100};
 
-            damagePlayersInRange(impactRange, 10);
+            damagePlayersInRange(impactRange, 10, false);
             explodeSolidTilesInRange(impactRange);
 
             state.game.setWeaponSelection();

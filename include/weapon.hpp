@@ -21,7 +21,7 @@ public:
     void fireWeapon();
     void updateLaunchAngle(SDL_FPoint start);
     bool intersectsSolidTile(SDL_FRect rect);
-    void damagePlayersInRange(SDL_FRect rect, int damage);
+    void damagePlayersInRange(SDL_FRect rect, int damage, bool ignoreCurrentPlayer);
     void explodeSolidTilesInRange(SDL_FRect rect);
     void renderAimDirection(SDL_FPoint start, float length);
 };

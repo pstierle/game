@@ -13,6 +13,8 @@ public:
     void render() override;
     void update() override;
     void leftMouseUp() override;
+    SDL_FPoint leftEyePosition();
+    SDL_FPoint rightEyePosition();
 };
 
 #endif

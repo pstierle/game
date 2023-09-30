@@ -86,10 +86,15 @@ bool Weapon::intersectsSolidTile(SDL_FRect rect)
     return hasIntersection;
 }
 
-void Weapon::damagePlayersInRange(SDL_FRect rect, int damage)
+void Weapon::damagePlayersInRange(SDL_FRect rect, int damage, bool ignoreCurrentPlayer)
 {
     for (size_t i = 0; i < state.game.players.size(); ++i)
     {
+        if (ignoreCurrentPlayer && i == static_cast<size_t>(state.game.currentTurn))
+        {
+            continue;
+        }
+
         SDL_FRect playerRect = state.game.players[i].positionRect();
 
         if (SDL_HasIntersectionF(&playerRect, &rect))
