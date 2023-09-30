@@ -5,6 +5,7 @@
 extern const int GRID_COLS;
 extern const int GRID_ROWS;
 extern const int FONT_SIZE;
+extern const int FONT_SIZE_LARGE;
 extern const float GRAVITY;
 extern SDL_Color COLOR_RED;
 extern SDL_Color COLOR_GREEN;

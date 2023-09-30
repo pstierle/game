@@ -17,7 +17,7 @@ WeaponMenu::WeaponMenu()
     specialWeapons[WeaponType::IRONMAN] = MenuWeapon(WeaponType::IRONMAN, TextureType::WEAPON_IRONMAN, {0, 0}, "Rockets", 0);
     specialWeapons[WeaponType::HULK] = MenuWeapon(WeaponType::HULK, TextureType::WEAPON_HULK, {0, 0}, "Smash", 0);
 
-    playerInfoText = Text({20.0f, 60.0f}, "");
+    playerInfoText = Text({20.0f, 60.0f}, "", false);
 
     hoveredIndex = -1;
 }

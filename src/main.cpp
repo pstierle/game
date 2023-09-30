@@ -16,7 +16,8 @@ int main(int argc, char *argv[])
 
     state.window = SDL_CreateWindow("game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1600, 960, SDL_WINDOW_RESIZABLE);
     state.renderer = SDL_CreateRenderer(state.window, -1, SDL_RENDERER_ACCELERATED);
-    state.font = TTF_OpenFont("Roboto.ttf", FONT_SIZE);
+    state.font = TTF_OpenFont("font.ttf", FONT_SIZE);
+    state.fontLarge = TTF_OpenFont("font.ttf", FONT_SIZE_LARGE);
     state.textureLoader.init();
     state.game = Game();
     state.game.setup();

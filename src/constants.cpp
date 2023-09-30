@@ -3,7 +3,8 @@
 
 const int GRID_COLS = 200;
 const int GRID_ROWS = 60;
-const int FONT_SIZE = 16;
+const int FONT_SIZE = 20;
+const int FONT_SIZE_LARGE = 30;
 const float GRAVITY = 500.0f;
 SDL_Color COLOR_RED = {218, 41, 41, 255};
 SDL_Color COLOR_GREEN = {81, 186, 42, 255};

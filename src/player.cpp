@@ -12,8 +12,8 @@ Player::Player(TextureType _textureType, std::string _name, SDL_FPoint _position
     texture = state.textureLoader.get(_textureType);
     name = _name;
     color = _color;
-    nameText = Text({0, 0}, name, color);
-    healthText = Text({0, 0}, "100", color);
+    nameText = Text({0, 0}, name, color, false);
+    healthText = Text({0, 0}, "100", color, false);
     nameText.center = true;
     healthText.center = true;
     credits = 100;
@@ -124,10 +124,10 @@ void Player::renderModel()
 
 void Player::renderInfoText()
 {
-    SDL_FRect nameBackGroundRect = {nameText.position.x - 4 - static_cast<float>(nameText.width) / 2, nameText.position.y, static_cast<float>(nameText.width) + 8, 20.0f};
+    SDL_FRect nameBackGroundRect = {nameText.position.x - 4 - static_cast<float>(nameText.textWidth) / 2, nameText.position.y, static_cast<float>(nameText.textWidth) + 8, static_cast<float>(nameText.textHeight)};
     Util::drawRectangle(nameBackGroundRect, COLOR_GREY, color, 1);
 
-    SDL_FRect healthBackGroundRect = {healthText.position.x - 4 - static_cast<float>(healthText.width) / 2, healthText.position.y, static_cast<float>(healthText.width) + 8, 20.0f};
+    SDL_FRect healthBackGroundRect = {healthText.position.x - 4 - static_cast<float>(healthText.textWidth) / 2, healthText.position.y, static_cast<float>(healthText.textWidth) + 8, static_cast<float>(healthText.textHeight)};
     Util::drawRectangle(healthBackGroundRect, COLOR_GREY, color, 1);
 
     nameText.render();

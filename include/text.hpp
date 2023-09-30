@@ -9,13 +9,14 @@ public:
     SDL_FPoint position;
     SDL_Color color;
     std::string text;
-    int width;
+    int textWidth, textHeight;
+    TTF_Font *font;
 
     bool center;
 
     Text();
-    Text(SDL_FPoint _position, std::string _text);
-    Text(SDL_FPoint _position, std::string _text, SDL_Color _color);
+    Text(SDL_FPoint _position, std::string _text, bool _large);
+    Text(SDL_FPoint _position, std::string _text, SDL_Color _color, bool _large);
 
     void render();
 };

@@ -6,7 +6,7 @@ Text::Text()
 {
 }
 
-Text::Text(SDL_FPoint _position, std::string _text)
+Text::Text(SDL_FPoint _position, std::string _text, bool _large)
 {
     position = _position;
     color = {255,
@@ -16,24 +16,41 @@ Text::Text(SDL_FPoint _position, std::string _text)
 
     text = _text;
     center = false;
-    width = 0;
+    textWidth = 0;
+    if (_large)
+    {
+        font = state.fontLarge;
+    }
+    else
+    {
+        font = state.font;
+    }
 }
 
-Text::Text(SDL_FPoint _position, std::string _text, SDL_Color _color)
+Text::Text(SDL_FPoint _position, std::string _text, SDL_Color _color, bool _large)
 {
     position = _position;
     text = _text;
     color = _color;
     center = false;
-    width = 0;
+    textWidth = 0;
+    if (_large)
+    {
+        font = state.fontLarge;
+    }
+    else
+    {
+        font = state.font;
+    }
 }
 
 void Text::render()
 {
     SDL_SetRenderDrawBlendMode(state.renderer, SDL_BLENDMODE_BLEND);
-    SDL_Surface *textSurface = TTF_RenderText_Blended(state.font, text.c_str(), color);
+    SDL_Surface *textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
     SDL_FRect destination = {position.x, position.y, static_cast<float>(textSurface->w), static_cast<float>(textSurface->h)};
-    width = textSurface->w;
+    textWidth = textSurface->w;
+    textHeight = textSurface->h;
 
     if (center)
     {

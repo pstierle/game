@@ -22,10 +22,10 @@ bool Game::setup()
     players[1] = Player(TextureType::PLAYER_IRONMAN, "Ironman", {250.0f, 0.0f}, COLOR_RED, 31, 44, WeaponType::IRONMAN);
     players[2] = Player(TextureType::PLAYER_SUPERMAN, "Superman", {350.0f, 0.0f}, COLOR_BLUE, 32, 44, WeaponType::SUPERMAN);
 
-    gameOverText = Text({0, 0}, "");
+    gameOverText = Text({0, 0}, "", true);
     gameOverText.center = true;
 
-    fpsCounterText = Text({0, 10}, "", COLOR_DARK_GREY);
+    fpsCounterText = Text({0, 10}, "", COLOR_DARK_GREY, true);
 
     startTime = 0;
     endTime = 0;
@@ -147,7 +147,7 @@ void Game::update()
         startTime = endTime;
 
         fpsCounterText.text = std::to_string(static_cast<int>(fps));
-        fpsCounterText.position.x = windowWidth - fpsCounterText.width - 10;
+        fpsCounterText.position.x = windowWidth - fpsCounterText.textWidth - 10;
     }
 }
 
