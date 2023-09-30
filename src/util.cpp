@@ -4,6 +4,21 @@ extern State state;
 
 namespace Util
 {
+    bool pointOutOfWindow(SDL_FPoint point)
+    {
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
+
+        return point.x < 0 || point.y < 0 || point.x > windowWidth || point.y > windowHeight;
+    }
+    bool rectOutOfWindow(SDL_FRect rect)
+    {
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
+
+        return rect.x - rect.w < 0 || rect.y - rect.h < 0 || rect.x > windowWidth || rect.y > windowHeight;
+    }
+
     bool pointInRect(SDL_FPoint point, SDL_FRect rect)
     {
         return point.x >= rect.x && point.x < rect.x + rect.w &&
@@ -23,6 +38,13 @@ namespace Util
         std::uniform_int_distribution<int> distribution(from, to);
 
         return distribution(rng);
+    }
+
+    SDL_FPoint endpointFromLine(SDL_FPoint start, float angle, int length)
+    {
+        float endX = start.x + length * std::cos(angle);
+        float endY = start.y + length * std::sin(angle);
+        return {endX, endY};
     }
 
     void drawLine(SDL_FPoint start, SDL_Color color, float angle, int length)

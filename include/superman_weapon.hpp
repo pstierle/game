@@ -6,6 +6,8 @@
 class SupermanWeapon : public Weapon
 {
 public:
+    int fireingLength;
+
     SupermanWeapon(int _cost);
 
     void render() override;

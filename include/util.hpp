@@ -15,4 +15,7 @@ namespace Util
     bool lineIntersectsRect(SDL_FPoint lineStart, SDL_FPoint lineEnd, SDL_FRect rect);
     bool doLinesIntersect(SDL_FPoint lineStart1, SDL_FPoint lineEnd1, SDL_FPoint lineStart2, SDL_FPoint lineEnd2);
     void drawLine(SDL_FPoint start, SDL_Color color, float angle, int length);
+    SDL_FPoint endpointFromLine(SDL_FPoint start, float angle, int length);
+    bool pointOutOfWindow(SDL_FPoint point);
+    bool rectOutOfWindow(SDL_FRect rect);
 }
