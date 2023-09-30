@@ -24,7 +24,6 @@ public:
     bool gameOver;
 
     Game();
-    ~Game();
 
     bool setup();
     void update();

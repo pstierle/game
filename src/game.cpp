@@ -3,7 +3,6 @@
 extern State state;
 
 Game::Game() {}
-Game::~Game() {}
 
 bool Game::setup()
 {

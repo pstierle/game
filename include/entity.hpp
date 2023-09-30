@@ -12,6 +12,7 @@ public:
 
     Entity();
     Entity(SDL_FPoint _position, int _width, int _height);
+    virtual ~Entity();
     virtual void update();
     virtual void render();
     SDL_FRect positionRect();

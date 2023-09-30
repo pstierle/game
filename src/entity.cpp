@@ -1,5 +1,9 @@
 #include "global.hpp"
 
+Entity::~Entity()
+{
+}
+
 Entity::Entity()
 {
     position = {0, 0};
