@@ -11,7 +11,7 @@ public:
     Text nameText, healthText;
     std::string name;
     SDL_Color color;
-    Uint32 bounceStart;
+    Uint32 bounceStart, damageAnimationStart;
     WeaponType specialWeaponType;
 
     int xVelocity, yVelocity, credits, health, launchAngle;

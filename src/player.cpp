@@ -117,6 +117,16 @@ void Player::updateInfoText()
 
 void Player::renderModel()
 {
+    Uint32 animationDiff = SDL_GetTicks() - damageAnimationStart;
+
+    if (animationDiff < 100)
+    {
+        return;
+    }
+    if (animationDiff < 300 && animationDiff > 200)
+    {
+        return;
+    }
     SDL_Rect spriteSource = {0, 0, width, height};
     SDL_FRect positionDestination = {position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
     SDL_RenderCopyF(state.renderer, texture, &spriteSource, &positionDestination);
@@ -136,6 +146,7 @@ void Player::renderInfoText()
 
 void Player::damagePlayer(int damage)
 {
+    damageAnimationStart = SDL_GetTicks();
     health -= damage;
 }
 
