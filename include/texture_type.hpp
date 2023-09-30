@@ -5,6 +5,7 @@ enum class TextureType
 {
     NONE,
     ROCK,
+    ROCK_ROUND,
     WATER,
     BACKGROUND,
     AIRSTRIKE_TARGET,

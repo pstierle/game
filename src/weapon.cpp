@@ -49,7 +49,7 @@ void Weapon::fireWeapon()
 {
     for (size_t i = 0; i < state.game.players.size(); ++i)
     {
-        if (i == static_cast<size_t>(state.game.currentTurn))
+        if (state.game.players[i].name == state.game.currentPlayer().name)
         {
             state.game.players[i].credits = state.game.players[i].credits - cost;
             break;
@@ -86,11 +86,33 @@ bool Weapon::intersectsSolidTile(SDL_FRect rect)
     return hasIntersection;
 }
 
+bool Weapon::intersectsPlayer(SDL_FRect rect, bool ignoreCurrentPlayer)
+{
+    bool hasIntersection = false;
+
+    for (size_t i = 0; i < state.game.players.size(); ++i)
+    {
+        if (ignoreCurrentPlayer && state.game.players[i].name == state.game.currentPlayer().name)
+        {
+            continue;
+        }
+
+        SDL_FRect playerRect = state.game.players[i].positionRect();
+        if (SDL_HasIntersectionF(&rect, &playerRect))
+        {
+            hasIntersection = true;
+            break;
+        }
+    }
+
+    return hasIntersection;
+}
+
 void Weapon::damagePlayersInRange(SDL_FRect rect, int damage, bool ignoreCurrentPlayer)
 {
     for (size_t i = 0; i < state.game.players.size(); ++i)
     {
-        if (ignoreCurrentPlayer && i == static_cast<size_t>(state.game.currentTurn))
+        if (ignoreCurrentPlayer && state.game.players[i].name == state.game.currentPlayer().name)
         {
             continue;
         }
@@ -122,7 +144,7 @@ void Weapon::explodeSolidTilesInRange(SDL_FRect rect)
 
                     for (int i = 0; i < 10; i++)
                     {
-                        state.game.map.createParticle(Util::rockDestroyParticle(destroyRockPosition));
+                        state.game.map.createParticle(Util::rockDestroyParticle(destroyRockPosition, 10));
                     }
                 }
             }

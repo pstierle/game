@@ -25,78 +25,70 @@ void IronmanWeapon::update()
 {
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
-        int windowWidth, windowHeight;
-        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
-
-        if (fireingSprite.position.x <= 0 || fireingSprite.position.y <= 0 || fireingSprite.position.x + fireingSprite.width >= windowWidth || fireingSprite.position.y + fireingSprite.height >= windowHeight)
+        if (Util::rectOutOfWindow(fireingSprite.positionRect()))
         {
             state.game.setWeaponSelection();
             state.game.nextTurn();
             return;
         }
 
-        SDL_FRect grenadeRect = {fireingSprite.position.x, fireingSprite.position.y, static_cast<float>(fireingSprite.width), static_cast<float>(fireingSprite.height)};
-
-        if (intersectsSolidTile(grenadeRect))
+        if (intersectsSolidTile(fireingSprite.positionRect()) || intersectsPlayer(fireingSprite.positionRect(), true))
         {
-            SDL_FPoint impactPosition = {fireingSprite.position.x + fireingSprite.height / 2, fireingSprite.position.y + fireingSprite.width / 2};
+            int range = 80;
 
             for (int i = 0; i < 150; i++)
             {
-                state.game.map.createParticle(Util::bombExplosionParticle(impactPosition));
+                state.game.map.createParticle(Util::bombExplosionParticle(fireingSprite.positionCenter(), range));
             }
 
-            SDL_FRect impactRange = {impactPosition.x - 50, impactPosition.y - 50, 100, 100};
-
-            damagePlayersInRange(impactRange, 20, false);
+            SDL_FRect impactRange = {fireingSprite.positionRect().x - range / 2, fireingSprite.positionRect().y - range / 2, static_cast<float>(fireingSprite.width + range), static_cast<float>(fireingSprite.height + range)};
+            damagePlayersInRange(impactRange, 30, false);
             explodeSolidTilesInRange(impactRange);
 
             state.game.setWeaponSelection();
             state.game.nextTurn();
+            return;
+        }
+        float speed = 400.0f;
+
+        if (drop)
+        {
+            fireingSprite.position.y += speed * state.deltaTime;
         }
         else
         {
-            float speed = 400.0f;
-
-            if (drop)
+            if (SDL_GetTicks() - launchStartTime <= 500)
             {
-                fireingSprite.position.y += speed * state.deltaTime;
+                fireingSprite.position.y -= speed * state.deltaTime;
+                aimingSpriteRotation = 0;
             }
             else
             {
-                if (SDL_GetTicks() - launchStartTime <= 500)
+                int mouseX = mousePosition.x;
+                int mouseY = mousePosition.y;
+
+                float directionX = static_cast<float>(mouseX) - fireingSprite.position.x;
+                float directionY = static_cast<float>(mouseY) - fireingSprite.position.y;
+
+                float length = sqrt(directionX * directionX + directionY * directionY);
+
+                if (length != 0)
                 {
-                    fireingSprite.position.y -= speed * state.deltaTime;
-                    aimingSpriteRotation = 0;
+                    directionX /= length;
+                    directionY /= length;
                 }
-                else
+
+                fireingSprite.position.x += directionX * speed * state.deltaTime;
+                fireingSprite.position.y += directionY * speed * state.deltaTime;
+
+                float angle = atan2(directionY, directionX) * (180.0f / M_PI);
+
+                aimingSpriteRotation = angle;
+
+                if (Util::calculateDistance({fireingSprite.position.x, fireingSprite.position.y}, {static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y)}) <= 5)
                 {
-                    int mouseX = mousePosition.x;
-                    int mouseY = mousePosition.y;
-
-                    float directionX = static_cast<float>(mouseX) - fireingSprite.position.x;
-                    float directionY = static_cast<float>(mouseY) - fireingSprite.position.y;
-
-                    float length = sqrt(directionX * directionX + directionY * directionY);
-
-                    if (length != 0)
-                    {
-                        directionX /= length;
-                        directionY /= length;
-                    }
-
-                    fireingSprite.position.x += directionX * speed * state.deltaTime;
-                    fireingSprite.position.y += directionY * speed * state.deltaTime;
-
-                    float angle = atan2(directionY, directionX) * (180.0f / M_PI);
-
-                    aimingSpriteRotation = angle;
-
-                    if (Util::calculateDistance({fireingSprite.position.x, fireingSprite.position.y}, {static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y)}) <= 5)
-                    {
-                        drop = true;
-                        aimingSpriteRotation = 90;
-                    }
+                    drop = true;
+                    aimingSpriteRotation = 90;
                 }
             }
         }

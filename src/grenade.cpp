@@ -6,13 +6,24 @@ Grenade::Grenade(int _cost) : Weapon(_cost)
 {
     fireingSprite = Sprite(TextureType::WEAPON_GRENADE, {0, 0}, 22, 22);
     throwStartTime = 0;
+    fireingRotation = 0;
 }
 
 void Grenade::render()
 {
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
-        fireingSprite.render();
+        SDL_Rect spriteSource = {0, 0, 16, 16};
+        SDL_FRect positionDestination = fireingSprite.positionRect();
+
+        if (launchAngle >= -90.0f && launchAngle <= 90.0f)
+        {
+            SDL_RenderCopyExF(state.renderer, fireingSprite.texture, &spriteSource, &positionDestination, fireingRotation, nullptr, SDL_FLIP_NONE);
+        }
+        else
+        {
+            SDL_RenderCopyExF(state.renderer, fireingSprite.texture, &spriteSource, &positionDestination, fireingRotation * -1, nullptr, SDL_FLIP_NONE);
+        }
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {
@@ -30,48 +41,43 @@ void Grenade::update()
 
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
-        int windowWidth, windowHeight;
-        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
-
-        if (fireingSprite.position.x <= 0 || fireingSprite.position.y <= 0 || fireingSprite.position.x + fireingSprite.width >= windowWidth || fireingSprite.position.y + fireingSprite.height >= windowHeight)
+        if (Util::rectOutOfWindow(fireingSprite.positionRect()))
         {
             state.game.setWeaponSelection();
             state.game.nextTurn();
             return;
         }
 
-        SDL_FRect grenadeRect = {fireingSprite.position.x, fireingSprite.position.y, static_cast<float>(fireingSprite.width), static_cast<float>(fireingSprite.height)};
-
-        if (intersectsSolidTile(grenadeRect))
+        if (intersectsSolidTile(fireingSprite.positionRect()) || intersectsPlayer(fireingSprite.positionRect(), true))
         {
-            SDL_FPoint impactPosition = {fireingSprite.position.x + fireingSprite.height / 2, fireingSprite.position.y + fireingSprite.width / 2};
+            int range = 50;
 
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 100; i++)
             {
-                state.game.map.createParticle(Util::bombExplosionParticle(impactPosition));
+                state.game.map.createParticle(Util::bombExplosionParticle(fireingSprite.positionCenter(), range));
             }
 
-            SDL_FRect impactRange = {impactPosition.x - 50, impactPosition.y - 50, 100, 100};
-
+            SDL_FRect impactRange = {fireingSprite.positionRect().x - range / 2, fireingSprite.positionRect().y - range / 2, static_cast<float>(fireingSprite.width + range), static_cast<float>(fireingSprite.height + range)};
             damagePlayersInRange(impactRange, 10, false);
             explodeSolidTilesInRange(impactRange);
 
             state.game.setWeaponSelection();
             state.game.nextTurn();
+            return;
         }
-        else
-        {
-            float speed = 400.0f;
 
-            float radians = launchAngle * (3.14159265359f / 180.0f);
-            float elapsed = static_cast<float>(SDL_GetTicks() - throwStartTime) / 2000.0f;
+        float speed = 400.0f;
 
-            float velocityX = cos(radians);
-            float velocityY = sin(radians) + elapsed;
+        float radians = launchAngle * (3.14159265359f / 180.0f);
+        float elapsed = static_cast<float>(SDL_GetTicks() - throwStartTime) / 2000.0f;
 
-            fireingSprite.position.x += velocityX * speed * state.deltaTime;
-            fireingSprite.position.y += velocityY * speed * state.deltaTime;
-        }
+        float velocityX = cos(radians);
+        float velocityY = sin(radians) + elapsed;
+
+        fireingSprite.position.x += velocityX * speed * state.deltaTime;
+        fireingSprite.position.y += velocityY * speed * state.deltaTime;
+
+        fireingRotation += 300 * state.deltaTime;
     }
 }
 

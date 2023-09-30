@@ -25,6 +25,7 @@
 #include "texture_loader.hpp"
 #include "sprite.hpp"
 #include "text.hpp"
+
 #include "weapon.hpp"
 #include "airstrike.hpp"
 #include "shotgun.hpp"
@@ -32,8 +33,11 @@
 #include "grenade.hpp"
 #include "ironman_weapon.hpp"
 #include "superman_weapon.hpp"
+#include "hulk_weapon.hpp"
+
 #include "menu_weapon.hpp"
 #include "weapon_menu.hpp"
+
 #include "map.hpp"
 #include "player.hpp"
 #include "util.hpp"

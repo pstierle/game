@@ -14,6 +14,10 @@ void TextureLoader::init()
     textures[TextureType::ROCK] = SDL_CreateTextureFromSurface(state.renderer, rockSurface);
     SDL_FreeSurface(rockSurface);
 
+    SDL_Surface *rockRoundSurface = IMG_Load("textures/rock_round.png");
+    textures[TextureType::ROCK_ROUND] = SDL_CreateTextureFromSurface(state.renderer, rockRoundSurface);
+    SDL_FreeSurface(rockRoundSurface);
+
     SDL_Surface *waterSurface = IMG_Load("textures/water.png");
     textures[TextureType::WATER] = SDL_CreateTextureFromSurface(state.renderer, waterSurface);
     SDL_FreeSurface(waterSurface);

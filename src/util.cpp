@@ -56,16 +56,16 @@ namespace Util
         SDL_RenderDrawLineF(state.renderer, start.x, start.y, endX, endY);
     }
 
-    Particle bombExplosionParticle(SDL_FPoint position)
+    Particle bombExplosionParticle(SDL_FPoint position, int maxRange)
     {
-        SDL_FPoint randomPosition = {static_cast<float>(randomInRange(position.x - 50, position.x + 50)), static_cast<float>(randomInRange(position.y - 50, position.y + 50))};
+        SDL_FPoint randomPosition = {static_cast<float>(randomInRange(position.x - maxRange, position.x + maxRange)), static_cast<float>(randomInRange(position.y - maxRange, position.y + maxRange))};
         return Particle(randomPosition, randomInRange(2, 5), randomInRange(2, 5), randomInRange(200, 1000), randomInRange(160, 255), randomInRange(0, 50), 0, 255);
     }
 
-    Particle rockDestroyParticle(SDL_FPoint position)
+    Particle rockDestroyParticle(SDL_FPoint position, int maxRange)
     {
         int randomGrey = randomInRange(0, 180);
-        SDL_FPoint randomPosition = {static_cast<float>(randomInRange(position.x - 20, position.x + 20)), static_cast<float>(randomInRange(position.y - 20, position.y + 20))};
+        SDL_FPoint randomPosition = {static_cast<float>(randomInRange(position.x - maxRange, position.x + maxRange)), static_cast<float>(randomInRange(position.y - maxRange, position.y + maxRange))};
         return Particle(randomPosition, randomInRange(2, 5), randomInRange(2, 5), randomInRange(200, 500), randomGrey, randomGrey, randomGrey, 255);
     }
 

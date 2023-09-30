@@ -133,6 +133,11 @@ void WeaponMenu::mouseClick()
                 state.game.selectedWeapon = new SupermanWeapon(targetWeapon.cost);
                 state.game.gameState = GameStateType::WEAPON_SELECTED;
             }
+            if (targetWeapon.type == WeaponType::HULK)
+            {
+                state.game.selectedWeapon = new HulkWeapon(targetWeapon.cost);
+                state.game.gameState = GameStateType::WEAPON_SELECTED;
+            }
             hoveredIndex = -1;
         }
     }

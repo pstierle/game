@@ -1,17 +1,17 @@
-#ifndef GRENADE_HPP
-#define GRENADE_HPP
+#ifndef HULK_WEAPON_HPP
+#define HULK_WEAPON_HPP
 
 #include "global.hpp"
 
-class Grenade : public Weapon
+class HulkWeapon : public Weapon
 {
 public:
     Sprite fireingSprite;
     Uint16 throwStartTime;
-
+    bool throwingRock;
     float fireingRotation;
 
-    Grenade(int _cost);
+    HulkWeapon(int _cost);
 
     void render() override;
     void update() override;

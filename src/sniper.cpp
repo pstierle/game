@@ -42,61 +42,27 @@ void Sniper::update()
     }
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
-        int windowWidth, windowHeight;
-        SDL_GetWindowSize(state.window, &windowWidth, &windowHeight);
-
-        if (fireingSprite.position.x <= 0 || fireingSprite.position.y <= 0 || fireingSprite.position.x + fireingSprite.width >= windowWidth || fireingSprite.position.y + fireingSprite.height >= windowHeight)
+        if (Util::rectOutOfWindow(fireingSprite.positionRect()) || intersectsPlayer(fireingSprite.positionRect(), true) || intersectsSolidTile(fireingSprite.positionRect()) || Util::calculateDistance(state.game.currentPlayer().positionCenter(), fireingSprite.positionCenter()) > 1000)
         {
-            state.game.setWeaponSelection();
-            state.game.nextTurn();
-            return;
-        }
-
-        SDL_FRect fireingSpritePosition = fireingSprite.positionRect();
-
-        Player *intersectingPlayer = nullptr;
-
-        for (size_t i = 0; i < state.game.players.size(); ++i)
-        {
-            if (state.game.players[i].name == state.game.currentPlayer().name)
+            if (intersectsPlayer(fireingSprite.positionRect(), true))
             {
-                continue;
+                damagePlayersInRange(fireingSprite.positionRect(), 20, true);
             }
 
-            SDL_FRect playerRect = state.game.players[i].positionRect();
-
-            if (SDL_HasIntersectionF(&playerRect, &fireingSpritePosition))
-            {
-                intersectingPlayer = &state.game.players[i];
-            }
-        }
-
-        if (intersectingPlayer != nullptr)
-        {
-            intersectingPlayer->damagePlayer(10);
             state.game.setWeaponSelection();
             state.game.nextTurn();
             return;
         }
 
-        if (intersectsSolidTile(fireingSpritePosition) || Util::calculateDistance(state.game.currentPlayer().position, {fireingSpritePosition.x, fireingSpritePosition.y}) > 1900)
-        {
-            state.game.setWeaponSelection();
-            state.game.nextTurn();
-            return;
-        }
-        else
-        {
-            float speed = 1000.0f;
-            float deltaTime = state.deltaTime;
-            float radians = launchAngle * (3.14159265359f / 180.0f);
+        float speed = 1000.0f;
+        float deltaTime = state.deltaTime;
+        float radians = launchAngle * (3.14159265359f / 180.0f);
 
-            float velocityX = speed * cos(radians);
-            float velocityY = speed * sin(radians);
+        float velocityX = speed * cos(radians);
+        float velocityY = speed * sin(radians);
 
-            fireingSprite.position.x += velocityX * deltaTime;
-            fireingSprite.position.y += velocityY * deltaTime;
-        }
+        fireingSprite.position.x += velocityX * deltaTime;
+        fireingSprite.position.y += velocityY * deltaTime;
     }
 }
 

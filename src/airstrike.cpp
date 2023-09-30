@@ -34,30 +34,26 @@ void Airstrike::update()
             return;
         }
 
-        SDL_FRect AirstrikeRect = {fireingSprite.position.x, fireingSprite.position.y, static_cast<float>(fireingSprite.width), static_cast<float>(fireingSprite.height)};
-
-        if (intersectsSolidTile(AirstrikeRect))
+        if (intersectsSolidTile(fireingSprite.positionRect()) || intersectsPlayer(fireingSprite.positionRect(), true))
         {
-            SDL_FPoint impactPosition = {fireingSprite.position.x + fireingSprite.height / 2, fireingSprite.position.y + fireingSprite.width / 2};
+            int range = 50;
 
-            for (int i = 0; i < 150; i++)
+            for (int i = 0; i < 100; i++)
             {
-                state.game.map.createParticle(Util::bombExplosionParticle(impactPosition));
+                state.game.map.createParticle(Util::bombExplosionParticle(fireingSprite.positionCenter(), range));
             }
 
-            SDL_FRect impactRange = {impactPosition.x - 50, impactPosition.y - 50, 100, 100};
-
-            damagePlayersInRange(impactRange, 20, false);
+            SDL_FRect impactRange = {fireingSprite.positionRect().x - range / 2, fireingSprite.positionRect().y - range / 2, static_cast<float>(fireingSprite.width + range), static_cast<float>(fireingSprite.height + range)};
+            damagePlayersInRange(impactRange, 10, false);
             explodeSolidTilesInRange(impactRange);
 
             state.game.setWeaponSelection();
             state.game.nextTurn();
+            return;
         }
-        else
-        {
-            float speed = 500.0f;
-            fireingSprite.position.y += 1 * state.deltaTime * speed;
-        }
+
+        float speed = 500.0f;
+        fireingSprite.position.y += 1 * state.deltaTime * speed;
     }
     if (state.game.gameState == GameStateType::WEAPON_SELECTED)
     {

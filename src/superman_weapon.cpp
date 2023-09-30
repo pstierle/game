@@ -30,7 +30,7 @@ void SupermanWeapon::update()
     }
     if (state.game.gameState == GameStateType::WEAPON_FIRING)
     {
-        fireingLength = fireingLength + 5;
+        fireingLength = fireingLength + (1000 * state.deltaTime);
 
         SDL_FPoint leftEyeHit = Util::endpointFromLine(leftEyePosition(), launchAngle * (3.14159265359f / 180.0f), fireingLength);
         SDL_FPoint rightEyeHit = Util::endpointFromLine(rightEyePosition(), launchAngle * (3.14159265359f / 180.0f), fireingLength);
