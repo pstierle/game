@@ -87,7 +87,7 @@ void HulkWeapon::update()
         {
             Player player = state.game.currentPlayer();
             SDL_FRect rockTargetRange = {player.position.x, player.positionCenter().y + player.height / 2, static_cast<float>(player.width), 20};
-            explodeSolidTilesInRange(rockTargetRange);
+            interactWorldInRange(rockTargetRange);
             throwingRock = true;
         }
     }

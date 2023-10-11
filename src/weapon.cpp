@@ -126,16 +126,17 @@ void Weapon::damagePlayersInRange(SDL_FRect rect, int damage, bool ignoreCurrent
     }
 }
 
-void Weapon::explodeSolidTilesInRange(SDL_FRect rect)
+void Weapon::interactWorldInRange(SDL_FRect rect)
 {
     for (int i = 0; i < GRID_ROWS; ++i)
     {
         for (int j = 0; j < GRID_COLS; ++j)
         {
 
+            SDL_FRect tileRect = state.game.map.tileGrid[i][j].positionRect();
+
             if (state.game.map.tileGrid[i][j].textureType == TextureType::ROCK)
             {
-                SDL_FRect tileRect = state.game.map.tileGrid[i][j].positionRect();
 
                 if (SDL_HasIntersectionF(&rect, &tileRect))
                 {
@@ -145,6 +146,20 @@ void Weapon::explodeSolidTilesInRange(SDL_FRect rect)
                     for (int i = 0; i < 10; i++)
                     {
                         state.game.map.createParticle(Util::rockDestroyParticle(destroyRockPosition, 10));
+                    }
+                }
+            }
+
+            if (state.game.map.tileGrid[i][j].textureType == TextureType::WATER)
+            {
+
+                if (SDL_HasIntersectionF(&rect, &tileRect))
+                {
+                    SDL_FPoint destroyRockPosition = {state.game.map.tileGrid[i][j].position.x + state.game.map.tileGrid[i][j].width / 2, state.game.map.tileGrid[i][j].position.y + state.game.map.tileGrid[i][j].height / 2};
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        state.game.map.createParticle(Util::waterCollisionParticle(destroyRockPosition, 10));
                     }
                 }
             }

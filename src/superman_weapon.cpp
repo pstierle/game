@@ -44,7 +44,7 @@ void SupermanWeapon::update()
 
         SDL_FRect impactRect = {leftEyeHit.x, leftEyeHit.y, 6, 6};
 
-        explodeSolidTilesInRange(impactRect);
+        interactWorldInRange(impactRect);
 
         damagePlayersInRange({leftEyeHit.x, leftEyeHit.y, 1, 1}, 1, true);
         damagePlayersInRange({rightEyeHit.x, rightEyeHit.y, 1, 1}, 1, true);

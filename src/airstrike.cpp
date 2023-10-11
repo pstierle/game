@@ -45,7 +45,7 @@ void Airstrike::update()
 
             SDL_FRect impactRange = {fireingSprite.positionRect().x - range / 2, fireingSprite.positionRect().y - range / 2, static_cast<float>(fireingSprite.width + range), static_cast<float>(fireingSprite.height + range)};
             damagePlayersInRange(impactRange, 10, false);
-            explodeSolidTilesInRange(impactRange);
+            interactWorldInRange(impactRange);
 
             state.game.setWeaponSelection();
             state.game.nextTurn();

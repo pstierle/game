@@ -69,6 +69,13 @@ namespace Util
         return Particle(randomPosition, randomInRange(2, 5), randomInRange(2, 5), randomInRange(200, 500), randomGrey, randomGrey, randomGrey, 255);
     }
 
+    Particle waterCollisionParticle(SDL_FPoint position, int maxRange)
+    {
+        int randomBlue = randomInRange(125, 255);
+        SDL_FPoint randomPosition = {static_cast<float>(randomInRange(position.x - maxRange, position.x + maxRange)), static_cast<float>(randomInRange(position.y - maxRange, position.y + maxRange))};
+        return Particle(randomPosition, randomInRange(2, 5), randomInRange(2, 5), randomInRange(200, 500), 0, 60, randomBlue, 255);
+    }
+
     void drawRectangle(SDL_FRect positionRect, SDL_Color backgroundColor, SDL_Color borderColor, float borderWidth)
     {
         SDL_SetRenderDrawColor(state.renderer, borderColor.r, borderColor.g, borderColor.b, borderColor.a);
@@ -177,6 +184,4 @@ namespace Util
 
         return false;
     }
-
-    void createWaterParticles(SDL_FPoint position) {}
 }
