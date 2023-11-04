@@ -140,7 +140,7 @@ void Weapon::interactWorldInRange(SDL_FRect rect)
 
                 if (SDL_HasIntersectionF(&rect, &tileRect))
                 {
-                    state.game.map.tileGrid[i][j].setTexture(TextureType::NONE);
+                    state.game.map.tileGrid[i][j].setTexture(TextureType::SKY);
                     SDL_FPoint destroyRockPosition = {state.game.map.tileGrid[i][j].position.x + state.game.map.tileGrid[i][j].width / 2, state.game.map.tileGrid[i][j].position.y + state.game.map.tileGrid[i][j].height / 2};
 
                     for (int i = 0; i < 10; i++)

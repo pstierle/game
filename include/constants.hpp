@@ -2,8 +2,8 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
-extern const int GRID_COLS;
-extern const int GRID_ROWS;
+extern int GRID_COLS;
+extern int GRID_ROWS;
 extern const int FONT_SIZE;
 extern const int FONT_SIZE_LARGE;
 extern const float GRAVITY;

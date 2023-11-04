@@ -9,6 +9,10 @@
 #include <random>
 #include <limits>
 #include <algorithm>
+#include <fstream>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
 #include <SDL2/SDL.h>
 #include "SDL2/SDL_ttf.h"

@@ -7,14 +7,15 @@ class Map
 {
 public:
     std::vector<std::vector<Sprite>> tileGrid;
-    std::vector<std::vector<Sprite>> backGroundTileGrid;
     std::vector<Particle> particles;
 
     Map();
     void setup();
     void render();
     void update();
-    void createParticle(Particle _particle);
+    void loadMapInfo();
+    void createParticle(Particle particle);
+    TextureType textureTypeFromMapInfo(int identifier);
 };
 
 #endif

@@ -1,8 +1,8 @@
 #include <SDL2/SDL.h>
 #include "constants.hpp"
 
-const int GRID_COLS = 200;
-const int GRID_ROWS = 60;
+int GRID_COLS = 200;
+int GRID_ROWS = 60;
 const int FONT_SIZE = 20;
 const int FONT_SIZE_LARGE = 30;
 const float GRAVITY = 500.0f;
