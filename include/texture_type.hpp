@@ -5,6 +5,8 @@ enum class TextureType
 {
     NONE,
     ROCK,
+    ROCK_DARK,
+    ROCK_GRASS,
     ROCK_ROUND,
     WATER,
     SKY,

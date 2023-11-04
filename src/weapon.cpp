@@ -66,7 +66,7 @@ bool Weapon::intersectsSolidTile(SDL_FRect rect)
     {
         for (int j = 0; j < GRID_COLS; ++j)
         {
-            if (state.game.map.tileGrid[i][j].textureType == TextureType::ROCK)
+            if (state.game.map.tileGrid[i][j].tileType == TileType::SOLID)
             {
                 SDL_FRect rockRect = state.game.map.tileGrid[i][j].positionRect();
 
@@ -135,32 +135,20 @@ void Weapon::interactWorldInRange(SDL_FRect rect)
 
             SDL_FRect tileRect = state.game.map.tileGrid[i][j].positionRect();
 
-            if (state.game.map.tileGrid[i][j].textureType == TextureType::ROCK)
+            if (state.game.map.tileGrid[i][j].tileType == TileType::SOLID)
             {
-
                 if (SDL_HasIntersectionF(&rect, &tileRect))
                 {
-                    state.game.map.tileGrid[i][j].setTexture(TextureType::SKY);
-                    SDL_FPoint destroyRockPosition = {state.game.map.tileGrid[i][j].position.x + state.game.map.tileGrid[i][j].width / 2, state.game.map.tileGrid[i][j].position.y + state.game.map.tileGrid[i][j].height / 2};
-
-                    for (int i = 0; i < 10; i++)
-                    {
-                        state.game.map.createParticle(Util::rockDestroyParticle(destroyRockPosition, 10));
-                    }
+                    state.game.map.tileGrid[i][j].explodeTile();
                 }
             }
 
-            if (state.game.map.tileGrid[i][j].textureType == TextureType::WATER)
+            if (state.game.map.tileGrid[i][j].tileType == TileType::WATER)
             {
 
                 if (SDL_HasIntersectionF(&rect, &tileRect))
                 {
-                    SDL_FPoint destroyRockPosition = {state.game.map.tileGrid[i][j].position.x + state.game.map.tileGrid[i][j].width / 2, state.game.map.tileGrid[i][j].position.y + state.game.map.tileGrid[i][j].height / 2};
-
-                    for (int i = 0; i < 10; i++)
-                    {
-                        state.game.map.createParticle(Util::waterCollisionParticle(destroyRockPosition, 10));
-                    }
+                    state.game.map.tileGrid[i][j].collideWater();
                 }
             }
         }

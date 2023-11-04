@@ -1,0 +1,75 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map.tmx": {
+            "scale": 0.5089,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 551.1888386716447,
+                "y": 1483.592061308705
+            }
+        },
+        "rock.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "rock_dark.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "rock_grass.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "sky-light.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "sky.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "water.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "/Users/paul.stierle/Projects/game/assets/map",
+    "last.imagePath": "/Users/paul.stierle/Projects/game/assets/textures",
+    "map.height": 30,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "json",
+    "map.width": 50,
+    "openFiles": [
+        "map.tmx",
+        "water.tsx",
+        "sky.tsx",
+        "sky-light.tsx",
+        "rock.tsx",
+        "rock_grass.tsx",
+        "rock_dark.tsx"
+    ],
+    "project": "map.tiled-project",
+    "recentFiles": [
+        "rock_dark.tsx",
+        "rock_grass.tsx",
+        "rock.tsx",
+        "sky-light.tsx",
+        "sky.tsx",
+        "water.tsx",
+        "map.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx"
+}

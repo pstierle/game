@@ -115,13 +115,16 @@ void Map::loadMapInfo()
                     GRID_ROWS = height;
                     GRID_ROWS = width;
 
-                    tileGrid.resize(GRID_ROWS, std::vector<Sprite>(GRID_COLS, Sprite()));
+                    tileGrid.resize(GRID_ROWS, std::vector<Tile>(GRID_COLS, Tile()));
 
                     for (int i = 0; i < GRID_ROWS; ++i)
                     {
                         for (int j = 0; j < GRID_COLS; ++j)
                         {
-                            tileGrid[i][j] = Sprite(textureTypeFromMapInfo(tileMap[i][j]), {j * 32.0f, i * 32.0f}, 32, 32);
+                            TextureType textureType = textureTypeFromMapInfo(tileMap[i][j]);
+                            TileType tileType = tileTypeFromTextureType(textureType);
+                            SDL_FPoint position = {j * 32.0f, i * 32.0f};
+                            tileGrid[i][j] = Tile(tileType, textureType, position);
                         }
                     }
                 }
@@ -135,14 +138,34 @@ TextureType Map::textureTypeFromMapInfo(int identifier)
     switch (identifier)
     {
     case 1:
-        return TextureType::SKY;
+        return TextureType::ROCK_DARK;
     case 2:
-        return TextureType::WATER;
+        return TextureType::ROCK_GRASS;
     case 3:
         return TextureType::ROCK;
     case 4:
         return TextureType::SKY_LIGHT;
+    case 5:
+        return TextureType::SKY;
+    case 6:
+        return TextureType::WATER;
     default:
         return TextureType::NONE;
+    }
+}
+
+TileType Map::tileTypeFromTextureType(TextureType type)
+{
+    if (type == TextureType::WATER)
+    {
+        return TileType::WATER;
+    }
+    else if (type == TextureType::ROCK_DARK || type == TextureType::ROCK || type == TextureType::ROCK_GRASS)
+    {
+        return TileType::SOLID;
+    }
+    else
+    {
+        return TileType::NON_SOLID;
     }
 }

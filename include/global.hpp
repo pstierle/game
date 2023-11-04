@@ -23,6 +23,7 @@
 #include "texture_type.hpp"
 #include "weapon_type.hpp"
 #include "game_state_type.hpp"
+#include "tile_type.hpp"
 
 #include "entity.hpp"
 #include "particle.hpp"
@@ -42,6 +43,7 @@
 #include "menu_weapon.hpp"
 #include "weapon_menu.hpp"
 
+#include "tile.hpp"
 #include "map.hpp"
 #include "player.hpp"
 #include "util.hpp"

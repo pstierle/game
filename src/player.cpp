@@ -56,7 +56,7 @@ void Player::updatePosition()
     {
         for (int j = 0; j < GRID_COLS; ++j)
         {
-            if (state.game.map.tileGrid[i][j].textureType == TextureType::ROCK)
+            if (state.game.map.tileGrid[i][j].tileType == TileType::SOLID)
             {
                 SDL_FRect rockRect = state.game.map.tileGrid[i][j].positionRect();
                 SDL_FRect playerRect = positionRect();

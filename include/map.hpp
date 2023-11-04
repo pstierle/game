@@ -6,7 +6,7 @@
 class Map
 {
 public:
-    std::vector<std::vector<Sprite>> tileGrid;
+    std::vector<std::vector<Tile>> tileGrid;
     std::vector<Particle> particles;
 
     Map();
@@ -16,6 +16,7 @@ public:
     void loadMapInfo();
     void createParticle(Particle particle);
     TextureType textureTypeFromMapInfo(int identifier);
+    TileType tileTypeFromTextureType(TextureType type);
 };
 
 #endif
