@@ -97,7 +97,7 @@ void HulkWeapon::leftMouseUp()
 {
     state.game.weaponMenu.specialWeapons[WeaponType::HULK].cost = 10000;
     Player player = state.game.currentPlayer();
-    fireingSprite.position = {player.position.x, player.position.y - 32};
+    fireingSprite.position = {player.position.x, player.position.y - 100};
     throwStartTime = SDL_GetTicks();
     fireWeapon();
 }

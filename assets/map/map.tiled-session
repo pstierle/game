@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map.tmx",
+    "activeFile": "map-info.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -11,6 +11,14 @@
         "": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "map-info.tmj": {
+            "scale": 0.9251,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1316.0739379526538,
+                "y": 475.62425683709876
+            }
         },
         "map.tmx": {
             "scale": 0.5089,
@@ -52,7 +60,7 @@
     "map.lastUsedFormat": "json",
     "map.width": 50,
     "openFiles": [
-        "map.tmx",
+        "map-info.tmj",
         "water.tsx",
         "sky.tsx",
         "sky-light.tsx",
@@ -68,6 +76,7 @@
         "sky-light.tsx",
         "sky.tsx",
         "water.tsx",
+        "map-info.tmj",
         "map.tmx"
     ],
     "tileset.embedInMap": true,
