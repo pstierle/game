@@ -11,6 +11,7 @@ public:
 
     Sprite();
     Sprite(TextureType _textureType, SDL_FPoint _position, int _width, int _height);
+    Sprite(SDL_Texture *_texture, SDL_FPoint _position, int _width, int _height);
 
     void setTexture(TextureType _textureType);
     void render() override;

@@ -10,7 +10,12 @@
 #include <limits>
 #include <algorithm>
 #include <fstream>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
 #include "rapidjson/document.h"
+#pragma GCC diagnostic pop
+
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 

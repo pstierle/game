@@ -10,29 +10,9 @@ void TextureLoader::init()
     textures[TextureType::SKY] = SDL_CreateTextureFromSurface(state.renderer, skySurface);
     SDL_FreeSurface(skySurface);
 
-    SDL_Surface *skyLightSurface = IMG_Load("assets/textures/sky-light.png");
-    textures[TextureType::SKY_LIGHT] = SDL_CreateTextureFromSurface(state.renderer, skyLightSurface);
-    SDL_FreeSurface(skyLightSurface);
-
-    SDL_Surface *rockSurface = IMG_Load("assets/textures/rock.png");
-    textures[TextureType::ROCK] = SDL_CreateTextureFromSurface(state.renderer, rockSurface);
-    SDL_FreeSurface(rockSurface);
-
-    SDL_Surface *rockDarkSurface = IMG_Load("assets/textures/rock_dark.png");
-    textures[TextureType::ROCK_DARK] = SDL_CreateTextureFromSurface(state.renderer, rockDarkSurface);
-    SDL_FreeSurface(rockDarkSurface);
-
-    SDL_Surface *rockGrassSurface = IMG_Load("assets/textures/rock_grass.png");
-    textures[TextureType::ROCK_GRASS] = SDL_CreateTextureFromSurface(state.renderer, rockGrassSurface);
-    SDL_FreeSurface(rockGrassSurface);
-
     SDL_Surface *rockRoundSurface = IMG_Load("assets/textures/rock_round.png");
     textures[TextureType::ROCK_ROUND] = SDL_CreateTextureFromSurface(state.renderer, rockRoundSurface);
     SDL_FreeSurface(rockRoundSurface);
-
-    SDL_Surface *waterSurface = IMG_Load("assets/textures/water.png");
-    textures[TextureType::WATER] = SDL_CreateTextureFromSurface(state.renderer, waterSurface);
-    SDL_FreeSurface(waterSurface);
 
     SDL_Surface *supermanSurface = IMG_Load("assets/textures/superman.png");
     textures[TextureType::PLAYER_SUPERMAN] = SDL_CreateTextureFromSurface(state.renderer, supermanSurface);

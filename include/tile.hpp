@@ -8,7 +8,7 @@ class Tile : public Sprite
 public:
     TileType tileType;
     Tile();
-    Tile(TileType _tileType, TextureType _textureType, SDL_FPoint _position);
+    Tile(TileType _tileType, SDL_Texture *_texture, SDL_FPoint _position);
     void explodeTile();
     void collideWater();
 };

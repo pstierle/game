@@ -6,7 +6,7 @@ Tile::Tile() : Sprite()
 {
 }
 
-Tile::Tile(TileType _tileType, TextureType _textureType, SDL_FPoint _position) : Sprite(_textureType, _position, 32, 32)
+Tile::Tile(TileType _tileType, SDL_Texture *_texture, SDL_FPoint _position) : Sprite(_texture, _position, 32, 32)
 {
     tileType = _tileType;
 }

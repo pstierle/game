@@ -11,7 +11,12 @@ bool Game::setup()
     previousTime = SDL_GetTicks();
 
     map = Map();
-    map.setup();
+    bool mapSetup = map.setup();
+
+    if (!mapSetup)
+    {
+        return false;
+    }
 
     weaponMenu = WeaponMenu();
     selectedWeapon = nullptr;

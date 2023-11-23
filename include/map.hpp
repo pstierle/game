@@ -10,13 +10,11 @@ public:
     std::vector<Particle> particles;
 
     Map();
-    void setup();
+    bool setup();
     void render();
     void update();
-    void loadMapInfo();
     void createParticle(Particle particle);
-    TextureType textureTypeFromMapInfo(int identifier);
-    TileType tileTypeFromTextureType(TextureType type);
+    TileType tileTypeFromName(std::string name);
 };
 
 #endif

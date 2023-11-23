@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map-info.tmj",
+    "activeFile": "map.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -21,11 +21,11 @@
             }
         },
         "map.tmx": {
-            "scale": 0.5089,
+            "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 551.1888386716447,
-                "y": 1483.592061308705
+                "x": 626,
+                "y": 734
             }
         },
         "rock.tsx": {
@@ -60,24 +60,24 @@
     "map.lastUsedFormat": "json",
     "map.width": 50,
     "openFiles": [
-        "map-info.tmj",
         "water.tsx",
         "sky.tsx",
         "sky-light.tsx",
         "rock.tsx",
         "rock_grass.tsx",
-        "rock_dark.tsx"
+        "rock_dark.tsx",
+        "map.tmx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
-        "rock_dark.tsx",
-        "rock_grass.tsx",
-        "rock.tsx",
-        "sky-light.tsx",
-        "sky.tsx",
         "water.tsx",
-        "map-info.tmj",
-        "map.tmx"
+        "sky.tsx",
+        "sky-light.tsx",
+        "rock.tsx",
+        "rock_grass.tsx",
+        "rock_dark.tsx",
+        "map.tmx",
+        "map-info.tmj"
     ],
     "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx"

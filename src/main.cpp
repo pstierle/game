@@ -20,7 +20,13 @@ int main(int argc, char *argv[])
     state.fontLarge = TTF_OpenFont("font.ttf", FONT_SIZE_LARGE);
     state.textureLoader.init();
     state.game = Game();
-    state.game.setup();
+    bool setup = state.game.setup();
+
+    if (!setup)
+    {
+        std::cerr << "Could not setup game." << std::endl;
+        return -1;
+    }
 
     while (state.game.running)
     {
